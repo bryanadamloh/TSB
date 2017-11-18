@@ -25,13 +25,13 @@ public class Admin implements AdminRecord{
             System.out.print("Enter your password: ");
             password = scan.next();
             System.out.print("Enter role for this user (Sales Manager/Purchase Manager): ");
-            role = scan.next();
+            role = scan.nextLine();
 
-            if(br.readLine() != null && role.equals("SM"))
+            if(br.readLine() != null && role.equals("Sales Manager"))
             {
                 SMAdd(username, password, role);
             }
-            else if (br.readLine() != null && role.equals("PM"))
+            else if (br.readLine() != null && role.equals("Purchase Manager"))
             {
                 PMAdd(username, password, role);
             }

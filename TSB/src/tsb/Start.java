@@ -24,7 +24,7 @@ public class Start {
         String cont = "y";
         int access = 0;
         
-          //Login Page
+        //Login Page
         System.out.println("Welcome to TSB Order Management System\n");
         System.out.println("Please login to continue\n");
         
@@ -54,26 +54,32 @@ public class Start {
                     {
                         System.out.println("Item Entry Menu\n");
                         System.out.println("1 ===> Add New Item");
-                        System.out.println("1 ===> Modify Existing Item");
-                        System.out.println("1 ===> Delete Item");
+                        System.out.println("2 ===> Modify Existing Item");
+                        System.out.println("3 ===> Delete Item");
+                        System.out.print("\n");
+                        System.out.println("Please enter your choice:");
                         choice = scan.next();
                         
                         if(choice.equals("1"))
                         {
                             i.addItem();
+                            System.out.println("Do you wish to continue to Main Menu? (Y/N)");
+                            cont = scan.next();
                         }
                         else if(choice.equals("2"))
                         {
                             i.modifyItem();
+                            System.out.println("Do you wish to continue to Main Menu? (Y/N)");
+                            cont = scan.next();
                         }
                         else if(choice.equals("3"));
                         {
                             i.deleteItem();
+                            System.out.println("Do you wish to continue to Main Menu? (Y/N)");
+                            cont = scan.next();
                         }
                     }   
                     
-                    System.out.println("Do you wish to continue to Main Menu? (Y/N)");
-                    cont = scan.next();
                     break;
                     
                 case 1:
@@ -83,35 +89,47 @@ public class Start {
                     System.out.println("3 ===> Daily Item-Wise Sales Entry");
                     System.out.println("4 ===> Purchase Requisition");
                     System.out.println("5 ===> List of Purchase Orders");
+                    System.out.print("\n");
+                    System.out.println("Please enter your choice:");
                     choice = scan.next();
                     
                     if(choice.equals("1"))
                     {
                         System.out.println("Item Entry Menu\n");
                         System.out.println("1 ===> Add New Item");
-                        System.out.println("1 ===> Modify Existing Item");
-                        System.out.println("1 ===> Delete Item");
+                        System.out.println("2 ===> Modify Existing Item");
+                        System.out.println("3 ===> Delete Item");
+                        System.out.print("\n");
+                        System.out.println("Please enter your choice:");
                         choice = scan.next();
                         
                         if(choice.equals("1"))
                         {
                             i.addItem();
+                            System.out.println("Do you wish to continue to Main Menu? (Y/N)");
+                            cont = scan.next();
                         }
                         else if(choice.equals("2"))
                         {
                             i.modifyItem();
+                            System.out.println("Do you wish to continue to Main Menu? (Y/N)");
+                            cont = scan.next();
                         }
                         else if(choice.equals("3"));
                         {
                             i.deleteItem();
+                            System.out.println("Do you wish to continue to Main Menu? (Y/N)");
+                            cont = scan.next();
                         }
                     }
                     else if(choice.equals("2"))
                     {
                         System.out.println("Supplier Entry Menu\n");
                         System.out.println("1 ===> Add New Supplier");
-                        System.out.println("1 ===> Modify Existing Supplier");
-                        System.out.println("1 ===> Delete Supplier");
+                        System.out.println("2 ===> Modify Existing Supplier");
+                        System.out.println("3 ===> Delete Supplier");
+                        System.out.print("\n");
+                        System.out.println("Please enter your choice:");
                         choice = scan.next();
                         
                         if(choice.equals("1"))
@@ -127,9 +145,7 @@ public class Start {
                             s.deleteSupplier();
                         }
                     }   
-                    
-                    System.out.println("Do you wish to continue to Main Menu? (Y/N)");
-                    cont = scan.next();
+                   
                     break;
                     
                 case 2:
@@ -139,6 +155,8 @@ public class Start {
                     System.out.println("3 ===> Purchase Requisition");
                     System.out.println("4 ===> Generate Purchase Orders");
                     System.out.println("5 ===> List Of Purchase Orders");
+                    System.out.print("\n");
+                    System.out.println("Please enter your choice:");
                     
                     
                     System.out.println("Do you wish to continue to Main Menu? (Y/N)");
@@ -170,11 +188,11 @@ public class Start {
                 {
                     return 0;
                 }
-                else if(name.equals(username) && password.equals(pass) && role.equals("SM"))
+                else if(name.equals(username) && password.equals(pass) && role.equals("Sales Manager"))
                 {
                     return 1;
                 }
-                else if(name.equals(username) && password.equals(pass) && role.equals("PM"))
+                else if(name.equals(username) && password.equals(pass) && role.equals("Purchase Manager"))
                 {
                     return 2;
                 }
