@@ -76,7 +76,7 @@ public class Supplier implements SupplierRecord{
                 String suppCom = details[2];
                 String itemCode = details[3];
                 
-                if(ID.equals(suppID))
+                if(suppID.equals(ID))
                 {
                     System.out.println("Enter New Supplier Name: ");
                     name = scan.nextLine();
@@ -89,6 +89,11 @@ public class Supplier implements SupplierRecord{
                     supplier = supplier.replace(suppCom, company);
                     supplier = supplier.replace(itemCode, itemID);
                     
+                    bw.write(supplier + "\n");
+                    bw.flush();
+                }
+                else
+                {
                     bw.write(supplier + "\n");
                     bw.flush();
                 }
@@ -116,7 +121,41 @@ public class Supplier implements SupplierRecord{
     @Override
     public void deleteSupplier() throws IOException
     {
-        
+        try
+        {
+            File supplierFile = new File("supplier.txt");
+            File tempDB = new File("temp.txt");
+            BufferedReader br = new BufferedReader(new FileReader(supplierFile));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(tempDB));
+            Scanner scan = new Scanner(System.in);
+            
+            String ID, supplier;
+            System.out.println("Enter Supplier ID to delete: ");
+            ID = scan.next();
+            
+            while((supplier = br.readLine()) != null)
+            {
+                String[] details = supplier.split(":");
+                String suppID = details[0];
+                
+                if(!ID.equals(suppID))
+                {
+                    bw.write(supplier + "\n");
+                    bw.flush();
+                }
+            }
+            
+            br.close();
+            bw.close();
+            supplierFile.delete();
+            tempDB.renameTo(supplierFile);
+            
+            System.out.println("Supplier ID " + ID + " has been successfully deleted!");
+        }
+        catch (IOException i)
+        {
+            i.printStackTrace();
+        }
     }
     
 }

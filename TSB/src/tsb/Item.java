@@ -76,7 +76,7 @@ public class Item implements ItemRecord{
                 String itemPrice = details[2];
                 String supplierID = details[3];
                 
-                if(code.equals(ID))
+                if(ID.equals(code))
                 {
                     System.out.println("Enter New Item Name; ");
                     name = scan.nextLine();
@@ -89,6 +89,11 @@ public class Item implements ItemRecord{
                     item = item.replace(itemPrice, price);
                     item = item.replace(supplierID, supplier);
                     
+                    bw.write(item + "\n");
+                    bw.flush();
+                }
+                else
+                {
                     bw.write(item + "\n");
                     bw.flush();
                 }
