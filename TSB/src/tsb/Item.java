@@ -78,16 +78,16 @@ public class Item implements ItemRecord{
                 
                 if(code.equals(ID))
                 {
-                    System.out.println("Enter Item Name; ");
+                    System.out.println("Enter New Item Name; ");
                     name = scan.nextLine();
-                    System.out.println("Enter Item Price: ");
+                    System.out.println("Enter New Item Price: ");
                     price = scan.next();
-                    System.out.println("Enter Supplier ID: ");
+                    System.out.println("Enter New Supplier ID: ");
                     supplier = scan.next();
                     
                     item = item.replace(itemName, name);
                     item = item.replace(itemPrice, price);
-                    item = item.replace(supplier, supplierID);
+                    item = item.replace(supplierID, supplier);
                     
                     bw.write(item + "\n");
                     bw.flush();

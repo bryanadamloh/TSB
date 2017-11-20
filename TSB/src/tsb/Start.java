@@ -20,7 +20,7 @@ public class Start {
         SupplierRecord s = new Supplier();
         
         String username, password;
-        String choice;
+        int choice;
         String cont = "y";
         int access = 0;
         
@@ -44,13 +44,13 @@ public class Start {
                     System.out.println("3 ===> Supplier Entry");
                     System.out.print("\n");
                     System.out.println("Please enter your choice:");
-                    choice = scan.next();
+                    choice = scan.nextInt();
                     
-                    if(choice.equals("1"))
+                    if(choice == 1)
                     {
                         a.AddUser();
                     }
-                    else if(choice.equals("2"))
+                    else if(choice == 2)
                     {
                         System.out.println("Item Entry Menu\n");
                         System.out.println("1 ===> Add New Item");
@@ -58,28 +58,26 @@ public class Start {
                         System.out.println("3 ===> Delete Item");
                         System.out.print("\n");
                         System.out.println("Please enter your choice:");
-                        choice = scan.next();
+                        choice = scan.nextInt();
                         
-                        if(choice.equals("1"))
-                        {
-                            i.addItem();
-                            System.out.println("Do you wish to continue to Main Menu? (Y/N)");
-                            cont = scan.next();
+                        switch (choice) {
+                            case 1:
+                                i.addItem();
+                                break;
+                            case 2:
+                                i.modifyItem();
+                                break;
+                            case 3:
+                                i.deleteItem();
+                                break;
+                            default:
+                                break;
                         }
-                        else if(choice.equals("2"))
-                        {
-                            i.modifyItem();
-                            System.out.println("Do you wish to continue to Main Menu? (Y/N)");
-                            cont = scan.next();
-                        }
-                        else if(choice.equals("3"));
-                        {
-                            i.deleteItem();
-                            System.out.println("Do you wish to continue to Main Menu? (Y/N)");
-                            cont = scan.next();
-                        }
+                        
+                        System.out.println("Do you wish to continue to Main Menu? (Y/N)");
+                        cont = scan.next();
                     }   
-                    
+
                     break;
                     
                 case 1:
@@ -91,9 +89,9 @@ public class Start {
                     System.out.println("5 ===> List of Purchase Orders");
                     System.out.print("\n");
                     System.out.println("Please enter your choice:");
-                    choice = scan.next();
+                    choice = scan.nextInt();
                     
-                    if(choice.equals("1"))
+                    if(choice == 1)
                     {
                         System.out.println("Item Entry Menu\n");
                         System.out.println("1 ===> Add New Item");
@@ -101,28 +99,26 @@ public class Start {
                         System.out.println("3 ===> Delete Item");
                         System.out.print("\n");
                         System.out.println("Please enter your choice:");
-                        choice = scan.next();
+                        choice = scan.nextInt();
                         
-                        if(choice.equals("1"))
-                        {
-                            i.addItem();
-                            System.out.println("Do you wish to continue to Main Menu? (Y/N)");
-                            cont = scan.next();
+                        switch (choice) {
+                            case 1:
+                                i.addItem();
+                                break;
+                            case 2:
+                                i.modifyItem();
+                                break;
+                            case 3:
+                                i.deleteItem();
+                                break;
+                            default:
+                                break;
                         }
-                        else if(choice.equals("2"))
-                        {
-                            i.modifyItem();
-                            System.out.println("Do you wish to continue to Main Menu? (Y/N)");
-                            cont = scan.next();
-                        }
-                        else if(choice.equals("3"));
-                        {
-                            i.deleteItem();
-                            System.out.println("Do you wish to continue to Main Menu? (Y/N)");
-                            cont = scan.next();
-                        }
+                        
+                        System.out.println("Do you wish to continue to Main Menu? (Y/N)");
+                        cont = scan.next();
                     }
-                    else if(choice.equals("2"))
+                    else if(choice == 2)
                     {
                         System.out.println("Supplier Entry Menu\n");
                         System.out.println("1 ===> Add New Supplier");
@@ -130,20 +126,24 @@ public class Start {
                         System.out.println("3 ===> Delete Supplier");
                         System.out.print("\n");
                         System.out.println("Please enter your choice:");
-                        choice = scan.next();
+                        choice = scan.nextInt();
                         
-                        if(choice.equals("1"))
-                        {
-                            s.addSupplier();
+                        switch (choice) {
+                            case 1:
+                                s.addSupplier();
+                                break;
+                            case 2:
+                                s.modifySupplier();
+                                break;
+                            case 3:
+                                s.deleteSupplier();
+                                break;
+                            default:
+                                break;
                         }
-                        else if(choice.equals("2"))
-                        {
-                            s.modifySupplier();
-                        }
-                        else if(choice.equals("3"));
-                        {
-                            s.deleteSupplier();
-                        }
+                        
+                        System.out.println("Do you wish to continue to Main Menu? (Y/N)");
+                        cont = scan.next();
                     }   
                    
                     break;

@@ -20,7 +20,7 @@ public class Supplier implements SupplierRecord{
             String code, name, company, itemID;
             
             System.out.println("Enter Supplier ID: ");
-            code = scan.next();
+            code = scan.nextLine();
             System.out.println("Enter Supplier Name: ");
             name = scan.nextLine();
             System.out.println("Enter Company Name: ");
@@ -55,7 +55,56 @@ public class Supplier implements SupplierRecord{
     @Override
     public void modifySupplier() throws IOException
     {
-        
+        try
+        {
+            File supplierFile = new File("supplier.txt");
+            File tempDB = new File("temp.txt");
+            BufferedReader br = new BufferedReader(new FileReader(supplierFile));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(tempDB));
+            Scanner scan = new Scanner(System.in);
+            
+            String ID, name, company, itemID, supplier;
+            
+            System.out.println("Enter Supplier ID to modify: ");
+            ID = scan.nextLine();
+            
+            while((supplier = br.readLine()) != null)
+            {
+                String[] details = supplier.split(":");
+                String suppID = details[0];
+                String suppName = details[1];
+                String suppCom = details[2];
+                String itemCode = details[3];
+                
+                if(ID.equals(suppID))
+                {
+                    System.out.println("Enter New Supplier Name: ");
+                    name = scan.nextLine();
+                    System.out.println("Enter New Supplier Company: ");
+                    company = scan.nextLine();
+                    System.out.println("Enter New Item Code: ");
+                    itemID = scan.next();
+                    
+                    supplier = supplier.replace(suppName, name);
+                    supplier = supplier.replace(suppCom, company);
+                    supplier = supplier.replace(itemCode, itemID);
+                    
+                    bw.write(supplier + "\n");
+                    bw.flush();
+                }
+            }
+            
+            br.close();
+            bw.close();
+            supplierFile.delete();
+            tempDB.renameTo(supplierFile);
+            
+            System.out.println("Supplier ID " + ID + " has been modified successfully!");
+        }
+        catch (IOException i)
+        {
+            i.printStackTrace();
+        }
     }
     
     @Override
