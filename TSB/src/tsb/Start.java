@@ -18,6 +18,7 @@ public class Start {
         ItemRecord i = new Item();
         AdminRecord a = new Admin();
         SupplierRecord s = new Supplier();
+        DailyItemSalesRecord ds = new DailyItemSales();
         
         String username, password;
         int choice;
@@ -145,7 +146,33 @@ public class Start {
                         System.out.println("Do you wish to continue to Main Menu? (Y/N)");
                         cont = scan.next();
                     }   
-                   
+                    else if(choice == 3)
+                    {
+                        System.out.println("Daily Item-Wise Sales Entry\n");
+                        System.out.println("1 ===> Add New Daily Item Sales");
+                        System.out.println("2 ===> Modify Daily Item Sales");
+                        System.out.println("3 ===> Delete Existed Daily Item Sales");
+                        System.out.println("\n");
+                        System.out.println("Please enter your choice:");
+                        choice = scan.nextInt();
+                        
+                        switch (choice) {
+                            case 1:
+                                ds.AddItemSales();
+                                break;
+                            case 2:
+                                ds.EditItemSales();
+                                break;
+                            case 3:
+                                ds.DeleteItemSales();
+                                break;
+                            default:
+                                break;
+                        }
+                        
+                        System.out.println("Do you wish to continue to Main Menu? (Y/N)");
+                        cont = scan.next();
+                    }
                     break;
                     
                 case 2:
