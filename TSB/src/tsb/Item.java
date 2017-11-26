@@ -15,36 +15,57 @@ public class Item implements ItemRecord{
         try
         {
             BufferedReader br = new BufferedReader(new FileReader("item.txt"));
+            BufferedReader br2 = new BufferedReader(new FileReader("supplier.txt"));
+            
             Scanner scan = new Scanner(System.in);
 
-            String code, name, price, supplier;
-
+            String code, name, supplier, qty, supp;
+            double price;
+            
             System.out.println("Enter Item Code: ");
             code = scan.next();
             System.out.println("Enter Item Name: ");
             name = scan.next();
             System.out.println("Enter Item Price: ");
-            price = scan.next();
+            price = scan.nextDouble();
+            System.out.println("Enter Item Quantity: ");
+            qty = scan.next();
             System.out.println("Enter Supplier ID: ");
             supplier = scan.next();
-
-            if(br.readLine() == null)
+            
+            while((supp = br2.readLine()) != null)
             {
-                PrintWriter pw = new PrintWriter("item.txt");
-                pw.write(code + ":" + name + ":" + price + ":" + supplier);
-                pw.println();
-                pw.close();
-            }
-            else
-            {
-                BufferedWriter bw = new BufferedWriter(new FileWriter("item.txt", true));
-                bw.newLine();
-                bw.append(code + ":" + name + ":" + price + ":" + supplier);
-                bw.close();
-            }
+                String[] details = supp.split(":");
+                String suppID = details[0];
+            
+                if(supplier.contains(suppID))
+                {
+                    System.out.println("Supplier ID exists!");
+                    if(br.readLine() == null)
+                    {
+                        PrintWriter pw = new PrintWriter("item.txt");
+                        pw.write(code + ":" + name + ":" + price + ":" + qty + ":" + supplier);
+                        pw.println();
+                        pw.close();
+                    }
+                    else
+                    {
+                        BufferedWriter bw = new BufferedWriter(new FileWriter("item.txt", true));
+                        bw.newLine();
+                        bw.append(code + ":" + name + ":" + price + ":" + qty + ":" + supplier);
+                        bw.close();
+                    }
 
-            System.out.println("Item code " + code + " has been successfully added!");
-            br.close();            
+                    System.out.println("Item code " + code + " has been successfully added!");
+                    br.close();
+                    br2.close();
+                    break;
+                }
+                else
+                {
+                    System.out.println("Invalid Supplier ID. Please try again!");
+                }
+            }     
         }
         catch(IOException i)
         {
@@ -63,7 +84,7 @@ public class Item implements ItemRecord{
             BufferedWriter bw = new BufferedWriter(new FileWriter(tempDB));
             Scanner scan = new Scanner(System.in);
             
-            String code, name, price, supplier, item;
+            String code, name, price, qty, supplier, item;
             
             System.out.println("Enter Item Code to modify: ");
             code = scan.nextLine();
@@ -74,19 +95,23 @@ public class Item implements ItemRecord{
                 String ID = details[0];
                 String itemName = details[1];
                 String itemPrice = details[2];
-                String supplierID = details[3];
+                String itemQty = details[3];
+                String supplierID = details[4];
                 
                 if(ID.equals(code))
                 {
-                    System.out.println("Enter New Item Name; ");
+                    System.out.println("Enter New Item Name: ");
                     name = scan.nextLine();
                     System.out.println("Enter New Item Price: ");
                     price = scan.next();
+                    System.out.println("Enter New Item Qty: ");
+                    qty = scan.next();
                     System.out.println("Enter New Supplier ID: ");
                     supplier = scan.next();
                     
                     item = item.replace(itemName, name);
                     item = item.replace(itemPrice, price);
+                    item = item.replace(itemQty, qty);
                     item = item.replace(supplierID, supplier);
                     
                     bw.write(item + "\n");
