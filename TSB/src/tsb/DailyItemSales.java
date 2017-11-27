@@ -19,10 +19,9 @@ public class DailyItemSales implements DailyItemSalesRecord {
             BufferedReader br = new BufferedReader(new FileReader("dailysales.txt"));
             BufferedReader br2 = new BufferedReader(new FileReader("item.txt"));
             Scanner scan = new Scanner(System.in);
-            NumberFormat f = new DecimalFormat("#0.00");
+            Sales s = new Sales();
             
             String date, itemID, item, qty;
-            double total;
             
             System.out.println("Enter Item ID: ");
             itemID = scan.nextLine();
@@ -34,6 +33,7 @@ public class DailyItemSales implements DailyItemSalesRecord {
                 String name = details[1];
                 String itemPrice = details[2];
                 String itemQty = details[3];
+                int oriQty = Integer.parseInt(itemQty);
                 
                 if(itemID.equals(ID))
                 {
@@ -46,25 +46,28 @@ public class DailyItemSales implements DailyItemSalesRecord {
                     int value = Integer.parseInt(qty);
                     double price = Double.parseDouble(itemPrice);
                     
-                    total = value * price;
+                    s.setQuantity(value);
+                    s.setPrice(price);
+                    
                     if(br.readLine() == null)
                     {
                         PrintWriter pw = new PrintWriter("dailysales.txt");
-                        pw.write(date + ":" + itemID + ":" + name + ":" + price + ":" + qty + ":" + f.format(total));
+                        pw.write(date + ":" + itemID + ":" + name + ":" + price + ":" + qty + ":" + s.calculateTotal());
                         pw.println();
                         pw.close();
                     }
                     else
                     {
                         BufferedWriter bw = new BufferedWriter(new FileWriter("dailysales.txt", true));
-                        bw.append(date + ":" + itemID + ":" + name + ":" + price + ":" + qty + ":" + f.format(total));
+                        bw.append(date + ":" + itemID + ":" + name + ":" + price + ":" + qty + ":" + s.calculateTotal());
                         bw.newLine();
                         bw.close();
                     }
-                    
-                    System.out.println("Daily Sales Item for " + itemID + " has been added with total sales of RM" + f.format(total) + "!");
+
+                    System.out.println("Daily Sales Item for " + itemID + " has been added with total sales of RM" + s.calculateTotal() + "!");
                     br.close();
                     br2.close();
+                    DeductItemQty(itemID ,oriQty, value);
                     break;
                 }
             }
@@ -73,6 +76,59 @@ public class DailyItemSales implements DailyItemSalesRecord {
         catch (IOException i)
         {
             i.printStackTrace();
+        }
+    }
+    
+    public void DeductItemQty(String code, int oriQty, int salesQty) throws IOException
+    {
+        try
+        {
+            File itemFile = new File("item.txt");
+            File tempDB2 = new File("temp2.txt");
+            BufferedReader br = new BufferedReader(new FileReader(itemFile));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(tempDB2));
+            
+            String item;
+            int totalQty;
+            
+            while((item = br.readLine()) != null)
+            {
+                String[] details = item.split(":");
+                String ID = details[0];
+                String itemName = details[1];
+                String itemPrice = details[2];
+                String itemQty = details[3];
+                String supplierID = details[4];
+                
+                totalQty = oriQty - salesQty;
+                String newQty = Integer.toString(totalQty);
+                if(ID.equals(code))
+                {
+                    item = item.replace(itemName, itemName);
+                    item = item.replace(itemPrice, itemPrice);
+                    item = item.replace(itemQty, newQty);
+                    item = item.replace(supplierID, supplierID);
+                    
+                    bw.write(item + "\n");
+                    bw.flush();
+                }
+                else
+                {
+                    bw.write(item + "\n");
+                    bw.flush();
+                }
+            }
+            
+            br.close();
+            bw.close();
+            itemFile.delete();
+            tempDB2.renameTo(itemFile);
+            
+            System.out.println("Item Code " + code + "'s quantity has been deducted!");
+        }
+        catch (IOException i)
+        {
+           i.printStackTrace();
         }
     }
     
@@ -86,7 +142,6 @@ public class DailyItemSales implements DailyItemSalesRecord {
             BufferedReader br = new BufferedReader(new FileReader(dsFile));
             BufferedWriter bw = new BufferedWriter(new FileWriter(tempDB));
             Scanner scan = new Scanner(System.in);
-            NumberFormat f = new DecimalFormat("#0.00");
             
             String itemID, qty, dailysales;
             double total;
@@ -114,7 +169,6 @@ public class DailyItemSales implements DailyItemSalesRecord {
                     double price = Double.parseDouble(itemPrice);
                     
                     total = newValue * price;
-                    f.format(total);
                     String sales = Double.toString(total);
                     
                     dailysales = dailysales.replace(date, date);
@@ -167,11 +221,17 @@ public class DailyItemSales implements DailyItemSalesRecord {
             {
                 String[] details = dailysales.split(":");
                 String code = details[1];
+                String qty = details[4];
+                int oldQty = Integer.parseInt(qty);
                 
                 if(!itemID.equals(code))
                 {
                     bw.write(dailysales + "\n");
                     bw.flush();
+                }
+                else
+                {
+                    ModifyItemQty(oldQty, code);
                 }
             }
             
@@ -181,6 +241,62 @@ public class DailyItemSales implements DailyItemSalesRecord {
             tempDB.renameTo(dsFile);
             
             System.out.println("Daily Sales Item Code " + itemID + " has been succesfully deleted!");
+        }
+        catch (IOException i)
+        {
+            i.printStackTrace();
+        }
+    }
+    
+    public void ModifyItemQty(int oldQty, String code) throws IOException
+    {
+        try
+        {
+            
+            File itemFile = new File("item.txt");
+            File tempDB1 = new File("temp1.txt");
+            BufferedReader br1 = new BufferedReader(new FileReader(itemFile));
+            BufferedWriter bw1 = new BufferedWriter(new FileWriter(tempDB1));
+
+            String item;
+            int totalQty;
+
+            while((item = br1.readLine()) != null)
+            {
+                String[] detail = item.split(":");
+                String ID = detail[0];
+                String itemName = detail[1];
+                String itemPrice = detail[2];
+                String itemQty = detail[3];
+                String supplierID = detail[4];
+
+                int oriQty = Integer.parseInt(itemQty);
+                totalQty = oldQty + oriQty;
+
+                String newQty = Integer.toString(totalQty);
+                if(code.equals(ID))
+                {
+                    item = item.replace(itemName, itemName);
+                    item = item.replace(itemPrice, itemPrice);
+                    item = item.replace(itemQty, newQty);
+                    item = item.replace(supplierID, supplierID);
+
+                    bw1.write(item + "\n");
+                    bw1.flush();
+                }
+                else
+                {
+                    bw1.write(item + "\n");
+                    bw1.flush();
+                }
+            }
+
+            br1.close();
+            bw1.close();
+            itemFile.delete();
+            tempDB1.renameTo(itemFile);
+
+            System.out.println("Item Code " + code + "'s quantity has been modified!");
         }
         catch (IOException i)
         {

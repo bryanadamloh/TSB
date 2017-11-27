@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 public class Start {
 
+    private static String username, password;
     public static void main(String[] args) throws IOException 
     {
         Scanner scan = new Scanner(System.in);
@@ -20,7 +21,6 @@ public class Start {
         SupplierRecord s = new Supplier();
         DailyItemSalesRecord ds = new DailyItemSales();
         
-        String username, password;
         int choice;
         String cont = "y";
         int access = 0;
@@ -34,7 +34,7 @@ public class Start {
         System.out.println("Password:");
         password = scan.next();
         
-        access = new Start().findUser(username, password);
+        access = new Start().getUser(username, password);
         
         do{
             switch (access) {
@@ -198,7 +198,7 @@ public class Start {
     }   
     
     
-    public int findUser(String username, String pass)
+    public int getUser(String username, String pass)
     {
         try
         {

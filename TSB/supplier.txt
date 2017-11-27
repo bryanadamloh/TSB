@@ -1,3 +1,3 @@
 S001:Ahmad:99 Speedmart:M001
 S002:Chong:7-Eleven:M002
-S003:Bryan:Family Mart:M003
+S003:Bangla:Family Mart:M003
