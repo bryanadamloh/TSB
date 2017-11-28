@@ -17,7 +17,7 @@ public class Supplier implements SupplierRecord{
             BufferedReader br = new BufferedReader(new FileReader("supplier.txt"));
             Scanner scan = new Scanner(System.in);
             
-            String code, name, company, itemID;
+            String code, name, company, contact;
             
             System.out.println("Enter Supplier ID: ");
             code = scan.nextLine();
@@ -25,13 +25,13 @@ public class Supplier implements SupplierRecord{
             name = scan.nextLine();
             System.out.println("Enter Company Name: ");
             company = scan.nextLine();
-            System.out.println("Enter Item ID: ");
-            itemID = scan.next();
+            System.out.println("Enter Supplier Contact Number: ");
+            contact = scan.nextLine();
             
             if(br.readLine() == null)
             {
                 PrintWriter pw = new PrintWriter("supplier.txt");
-                pw.write(code + ":" + name + ":" + company + ":" + itemID);
+                pw.write(code + ":" + name + ":" + company + ":" + contact);
                 pw.println();
                 pw.close();
             }
@@ -39,7 +39,7 @@ public class Supplier implements SupplierRecord{
             {
                 BufferedWriter bw = new BufferedWriter(new FileWriter("supplier.txt", true));
                 bw.newLine();
-                bw.write(code + ":" + name + ":" + company + ":" + itemID);
+                bw.write(code + ":" + name + ":" + company + ":" + contact);
                 bw.close();
             }
             
@@ -63,7 +63,8 @@ public class Supplier implements SupplierRecord{
             BufferedWriter bw = new BufferedWriter(new FileWriter(tempDB));
             Scanner scan = new Scanner(System.in);
             
-            String ID, name, company, itemID, supplier;
+            String ID, name, company, contact, supplier;
+            boolean found = false;
             
             System.out.println("Enter Supplier ID to modify: ");
             ID = scan.nextLine();
@@ -74,7 +75,7 @@ public class Supplier implements SupplierRecord{
                 String suppID = details[0];
                 String suppName = details[1];
                 String suppCom = details[2];
-                String itemCode = details[3];
+                String suppCont = details[3];
                 
                 if(suppID.equals(ID))
                 {
@@ -82,21 +83,27 @@ public class Supplier implements SupplierRecord{
                     name = scan.nextLine();
                     System.out.println("Enter New Supplier Company: ");
                     company = scan.nextLine();
-                    System.out.println("Enter New Item Code: ");
-                    itemID = scan.next();
+                    System.out.println("Enter New Supplier Contact: ");
+                    contact = scan.nextLine();
                     
                     supplier = supplier.replace(suppName, name);
                     supplier = supplier.replace(suppCom, company);
-                    supplier = supplier.replace(itemCode, itemID);
+                    supplier = supplier.replace(suppCont, contact);
                     
                     bw.write(supplier + "\n");
                     bw.flush();
+                    found = true;
                 }
                 else
                 {
                     bw.write(supplier + "\n");
                     bw.flush();
+                    found = false;
                 }
+            }
+            if(!found)
+            {
+                System.out.println("Invalid Item ID. Please Try Again!");
             }
             
             br.close();
@@ -104,7 +111,10 @@ public class Supplier implements SupplierRecord{
             supplierFile.delete();
             tempDB.renameTo(supplierFile);
             
-            System.out.println("Supplier ID " + ID + " has been modified successfully!");
+            if(found)
+            {
+                System.out.println("Supplier ID " + ID + " has been modified successfully!");
+            }
         }
         catch (IOException i)
         {
@@ -130,6 +140,8 @@ public class Supplier implements SupplierRecord{
             Scanner scan = new Scanner(System.in);
             
             String ID, supplier;
+            boolean found = false;
+            
             System.out.println("Enter Supplier ID to delete: ");
             ID = scan.next();
             
@@ -142,7 +154,17 @@ public class Supplier implements SupplierRecord{
                 {
                     bw.write(supplier + "\n");
                     bw.flush();
+                    found = true;
                 }
+                else
+                {
+                    found = false;
+                }
+            }
+            
+            if(!found)
+            {
+                System.out.println("Invalid Supplier ID. Please Try Again!");
             }
             
             br.close();
@@ -150,7 +172,11 @@ public class Supplier implements SupplierRecord{
             supplierFile.delete();
             tempDB.renameTo(supplierFile);
             
-            System.out.println("Supplier ID " + ID + " has been successfully deleted!");
+            if(found)
+            {
+                System.out.println("Supplier ID " + ID + " has been successfully deleted!");
+            }
+            
         }
         catch (IOException i)
         {

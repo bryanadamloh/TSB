@@ -8,7 +8,6 @@ package tsb;
 import java.io.*;
 import java.text.*;
 import java.util.Scanner;
-import java.util.Date;
 import java.util.Random;
 public class PRequisition implements PRequisitionRecord {
     
@@ -22,6 +21,7 @@ public class PRequisition implements PRequisitionRecord {
             Scanner scan = new Scanner(System.in);
             
             String itemCode, qty, item, date;
+            boolean found = false;
             
             System.out.println("Enter the Item Code for Restock: ");
             itemCode = scan.nextLine();
@@ -64,14 +64,18 @@ public class PRequisition implements PRequisitionRecord {
                     
                     br.close();
                     br2.close();
+                    found = true;
                     break;
                 }
                 else
                 {
-                    System.out.println("Invalid Item Code! Please Try Again!");
+                    found = false;
                 }
             }
-            
+            if(!found)
+            {
+                System.out.println("Invalid Item Code! Please Try Again!");
+            }
         }
         catch (IOException i)
         {
@@ -86,9 +90,29 @@ public class PRequisition implements PRequisitionRecord {
     }
     
     @Override
-    public void deletePRequisition() throws IOException
+    public void viewPRequisition() throws IOException
     {
         
+    }
+    
+    @Override
+    public void deletePRequisition() throws IOException
+    {
+        try
+        {
+            File PRFile = new File("PR.txt");
+            File tempDB = new File("temp2.txt");
+            BufferedReader br = new BufferedReader(new FileReader(PRFile));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(tempDB));
+            Scanner scan = new Scanner(System.in);
+            
+            String pr;
+            
+        }
+        catch (IOException i)
+        {
+            
+        }
     }
     
 }

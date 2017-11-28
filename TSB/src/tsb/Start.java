@@ -20,6 +20,7 @@ public class Start {
         AdminRecord a = new Admin();
         SupplierRecord s = new Supplier();
         DailyItemSalesRecord ds = new DailyItemSales();
+        PRequisitionRecord pr = new PRequisition();
         
         int choice;
         String cont = "y";
@@ -61,7 +62,8 @@ public class Start {
                         System.out.println("Please enter your choice:");
                         choice = scan.nextInt();
                         
-                        switch (choice) {
+                        switch (choice) 
+                        {
                             case 1:
                                 i.addItem();
                                 break;
@@ -102,7 +104,8 @@ public class Start {
                         System.out.println("Please enter your choice:");
                         choice = scan.nextInt();
                         
-                        switch (choice) {
+                        switch (choice) 
+                        {
                             case 1:
                                 i.addItem();
                                 break;
@@ -129,7 +132,8 @@ public class Start {
                         System.out.println("Please enter your choice:");
                         choice = scan.nextInt();
                         
-                        switch (choice) {
+                        switch (choice) 
+                        {
                             case 1:
                                 s.addSupplier();
                                 break;
@@ -156,7 +160,8 @@ public class Start {
                         System.out.println("Please enter your choice:");
                         choice = scan.nextInt();
                         
-                        switch (choice) {
+                        switch (choice) 
+                        {
                             case 1:
                                 ds.AddItemSales();
                                 break;
@@ -165,6 +170,34 @@ public class Start {
                                 break;
                             case 3:
                                 ds.DeleteItemSales();
+                                break;
+                            default:
+                                break;
+                        }
+                        
+                        System.out.println("Do you wish to continue to Main Menu? (Y/N)");
+                        cont = scan.next();
+                    }
+                    else if(choice == 4)
+                    {
+                        System.out.println("Purchase Requisition\n");
+                        System.out.println("1 ===> Create New Purchase Requisition");
+                        System.out.println("2 ===> Modify Existing Purchase Requisition");
+                        System.out.println("3 ===> Delete Purchase Requisition");
+                        System.out.println("\n");
+                        System.out.println("Please enter your choice:");
+                        choice = scan.nextInt();
+                        
+                        switch (choice) 
+                        {
+                            case 1:
+                                pr.addPRequisition();
+                                break;
+                            case 2:
+                                pr.editPRequisition();
+                                break;
+                            case 3:
+                                pr.deletePRequisition();
                                 break;
                             default:
                                 break;

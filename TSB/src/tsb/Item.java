@@ -21,6 +21,7 @@ public class Item implements ItemRecord{
 
             String code, name, supplier, qty, supp;
             double price;
+            boolean found = false;
             
             System.out.println("Enter Item Code: ");
             code = scan.next();
@@ -59,13 +60,19 @@ public class Item implements ItemRecord{
                     System.out.println("Item code " + code + " has been successfully added!");
                     br.close();
                     br2.close();
+                    found = true;
                     break;
                 }
                 else
                 {
-                    System.out.println("Invalid Supplier ID. Please try again!");
+                    found = false;
                 }
-            }     
+            }
+            
+            if(!found)
+            {
+                System.out.println("Invalid Supplier ID. Please try again!");
+            }
         }
         catch(IOException i)
         {
@@ -155,6 +162,8 @@ public class Item implements ItemRecord{
             Scanner scan = new Scanner(System.in);
             
             String ID, item;
+            boolean found = false;
+            
             System.out.println("Enter Item Code to delete: ");
             ID = scan.next();
             
@@ -167,7 +176,17 @@ public class Item implements ItemRecord{
                 {
                     bw.write(item + "\n");
                     bw.flush();
+                    found = true;
                 }
+                else
+                {
+                    found = false;
+                }
+            }
+            
+            if(!found)
+            {
+                System.out.println("Invalid Item Code. Please Try Again!");
             }
             
             br.close();
@@ -175,7 +194,11 @@ public class Item implements ItemRecord{
             itemFile.delete();
             tempDB.renameTo(itemFile);
             
-            System.out.println("Item Code " + ID + " has been succesfully deleted!");
+            if(found)
+            {
+               System.out.println("Item Code " + ID + " has been succesfully deleted!"); 
+            }
+            
         }
         catch (IOException i)
         {

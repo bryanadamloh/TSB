@@ -10,6 +10,7 @@ public interface PRequisitionRecord {
     
     public void addPRequisition() throws IOException;
     public void editPRequisition() throws IOException;
+    public void viewPRequisition() throws IOException;
     public void deletePRequisition() throws IOException;
     
 }

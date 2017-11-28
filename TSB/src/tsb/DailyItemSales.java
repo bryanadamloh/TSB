@@ -22,6 +22,7 @@ public class DailyItemSales implements DailyItemSalesRecord {
             Sales s = new Sales();
             
             String date, itemID, item, qty;
+            boolean found = false;
             
             System.out.println("Enter Item ID: ");
             itemID = scan.nextLine();
@@ -68,8 +69,17 @@ public class DailyItemSales implements DailyItemSalesRecord {
                     br.close();
                     br2.close();
                     DeductItemQty(itemID ,oriQty, value);
+                    found = true;
                     break;
                 }
+                else
+                {
+                    found = false;
+                }
+            }
+            if (!found)
+            {
+                System.out.println("Invalid Item Code! Please Try Again!");
             }
             
         }
@@ -143,8 +153,9 @@ public class DailyItemSales implements DailyItemSalesRecord {
             BufferedWriter bw = new BufferedWriter(new FileWriter(tempDB));
             Scanner scan = new Scanner(System.in);
             
-            String itemID, qty, dailysales;
+            String itemID, newQty, dailysales;
             double total;
+            boolean found = false;
             
             System.out.println("Enter Item Code to modify: ");
             itemID = scan.nextLine();
@@ -163,9 +174,9 @@ public class DailyItemSales implements DailyItemSalesRecord {
                 {
                     System.out.println("Item ID exists!\n");
                     System.out.println("Enter New Quantity Sold: ");
-                    qty = scan.nextLine();
+                    newQty = scan.nextLine();
                     
-                    int newValue = Integer.parseInt(qty);
+                    int newValue = Integer.parseInt(newQty);
                     double price = Double.parseDouble(itemPrice);
                     
                     total = newValue * price;
@@ -175,17 +186,24 @@ public class DailyItemSales implements DailyItemSalesRecord {
                     dailysales = dailysales.replace(code, code);
                     dailysales = dailysales.replace(name, name);
                     dailysales = dailysales.replace(itemPrice, itemPrice);
-                    dailysales = dailysales.replace(salesQty, qty);
+                    dailysales = dailysales.replace(salesQty, newQty);
                     dailysales = dailysales.replace(totalsales, sales);
                     
                     bw.write(dailysales + "\n");
                     bw.flush();
+                    found = true;
+                    changeItemQty(code, salesQty, newValue);
                 }
                 else
                 {
                     bw.write(dailysales + "\n");
                     bw.flush();
+                    found = false;
                 }
+            }
+            if(!found)
+            {
+                System.out.println("Invalid Item ID. Please Try Again!");
             }
             
             br.close();
@@ -193,7 +211,69 @@ public class DailyItemSales implements DailyItemSalesRecord {
             dsFile.delete();
             tempDB.renameTo(dsFile);
             
-            System.out.println("Daily Sales for Item Code " + itemID + " has been succesfully modified!");
+            if(found)
+            {
+                System.out.println("Daily Sales for Item Code " + itemID + " has been succesfully modified!");
+            }
+            
+        }
+        catch (IOException i)
+        {
+            i.printStackTrace();
+        }
+    }
+    
+    public void changeItemQty(String code, String salesQty, int newQty) throws IOException
+    {
+        try
+        {
+            File itemFile = new File("item.txt");
+            File tempDB3 = new File("temp3.txt");
+            BufferedReader br = new BufferedReader(new FileReader(itemFile));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(tempDB3));
+            Sales s = new Sales();
+            
+            String item;
+            
+            while((item = br.readLine()) != null)
+            {
+                String[] details = item.split(":");
+                String ID = details[0];
+                String itemName = details[1];
+                String itemPrice = details[2];
+                String itemQty = details[3];
+                String supplierID = details[4];
+                
+                int iQty = Integer.parseInt(itemQty);
+                int sQty = Integer.parseInt(salesQty);
+                
+                if(code.equals(ID))
+                {
+                    s.setItemQty(iQty);
+                    s.setModifiedQty(newQty);
+                    s.setOldQty(sQty);
+                    int qty = s.calculateTotalQty();
+                    String Qty = Integer.toString(qty);
+                    
+                    item = item.replace(itemName, itemName);
+                    item = item.replace(itemPrice, itemPrice);
+                    item = item.replace(itemQty, Qty);
+                    item = item.replace(supplierID, supplierID);
+                    
+                    bw.write(item + "\n");
+                    bw.flush();
+                }
+                else
+                {
+                    bw.write(item + "\n");
+                    bw.flush();
+                }
+            }
+            
+            br.close();
+            bw.close();
+            itemFile.delete();
+            tempDB3.renameTo(itemFile);
         }
         catch (IOException i)
         {
@@ -213,8 +293,9 @@ public class DailyItemSales implements DailyItemSalesRecord {
             Scanner scan = new Scanner(System.in);
             
             String itemID, dailysales;
+            boolean found = false;
             
-            System.out.println("Enter Item ID to delete");
+            System.out.println("Enter Item Code to delete");
             itemID = scan.nextLine();
             
             while((dailysales = br.readLine()) != null)
@@ -228,11 +309,21 @@ public class DailyItemSales implements DailyItemSalesRecord {
                 {
                     bw.write(dailysales + "\n");
                     bw.flush();
+                    found = true;
+                }
+                else if(itemID.equals(code))
+                {
+                    ModifyItemQty(oldQty, code);
+                    found = true;
                 }
                 else
                 {
-                    ModifyItemQty(oldQty, code);
+                    found = false;
                 }
+            }
+            if(!found)
+            {
+                System.out.println("Invalid Item ID. Please Try Again!");
             }
             
             br.close();
@@ -240,7 +331,9 @@ public class DailyItemSales implements DailyItemSalesRecord {
             dsFile.delete();
             tempDB.renameTo(dsFile);
             
-            System.out.println("Daily Sales Item Code " + itemID + " has been succesfully deleted!");
+            if(found){
+                System.out.println("Daily Sales Item Code " + itemID + " has been succesfully deleted!");
+            }
         }
         catch (IOException i)
         {
