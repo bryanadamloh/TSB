@@ -37,7 +37,7 @@ public class DailyItemSales implements DailyItemSalesRecord {
                 
                 if(itemID.equals(ID))
                 {
-                    System.out.println("Item ID exists!\n");
+                    System.out.println("Item ID exists!");
                     System.out.println("Enter the date: ");
                     date = scan.nextLine();
                     System.out.println("Enter the quantity sold: ");

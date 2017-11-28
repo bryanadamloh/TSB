@@ -51,8 +51,8 @@ public class Item implements ItemRecord{
                     else
                     {
                         BufferedWriter bw = new BufferedWriter(new FileWriter("item.txt", true));
-                        bw.newLine();
                         bw.append(code + ":" + name + ":" + price + ":" + qty + ":" + supplier);
+                        bw.newLine();
                         bw.close();
                     }
 
