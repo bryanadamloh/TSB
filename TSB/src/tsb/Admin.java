@@ -8,9 +8,8 @@ package tsb;
 import java.io.*;
 import java.util.Scanner;
 import java.util.Random;
-public class Admin implements AdminRecord{
+public class Admin extends SalesPurchaseManager{
     
-    @Override
     public void AddUser() throws IOException
     {
         try
