@@ -125,7 +125,14 @@ public class Supplier implements SupplierRecord{
     @Override
     public void viewSupplier() throws IOException
     {
-        
+//        try
+//        {
+//            
+//        }
+//        catch(IOException i)
+//        {
+//            i.printStackTrace();
+//        }
     }
     
     @Override

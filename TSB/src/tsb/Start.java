@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class Start {
 
-    private static String username, password;
+    public static String username, password;
     public static void main(String[] args) throws IOException 
     {
         Scanner scan = new Scanner(System.in);
@@ -21,6 +21,7 @@ public class Start {
         SupplierRecord s = new Supplier();
         DailyItemSalesRecord ds = new DailyItemSales();
         PRequisitionRecord pr = new PRequisition();
+        PurchaseOrderRecord po = new PurchaseOrder();
         
         int choice;
         String cont = "y";
@@ -73,6 +74,9 @@ public class Start {
                                 break;
                             case 2:
                                 a.modifyItem();
+                                break;
+                            case 3:
+                                a.viewItem();
                                 break;
                             case 4:
                                 a.deleteItem();
@@ -161,7 +165,8 @@ public class Start {
                         System.out.println("Item Entry Menu\n");
                         System.out.println("1 ===> Add New Item");
                         System.out.println("2 ===> Modify Existing Item");
-                        System.out.println("3 ===> Delete Item");
+                        System.out.println("3 ===> View Item");
+                        System.out.println("4 ===> Delete Item");
                         System.out.print("\n");
                         System.out.println("Please enter your choice:");
                         choice = scan.nextInt();
@@ -175,6 +180,9 @@ public class Start {
                                 i.modifyItem();
                                 break;
                             case 3:
+                                i.viewItem();
+                                break;
+                            case 4:
                                 i.deleteItem();
                                 break;
                             default:
@@ -245,7 +253,8 @@ public class Start {
                         System.out.println("Purchase Requisition\n");
                         System.out.println("1 ===> Create New Purchase Requisition");
                         System.out.println("2 ===> Modify Existing Purchase Requisition");
-                        System.out.println("3 ===> Delete Purchase Requisition");
+                        System.out.println("3 ===> View Purchase Requisition");
+                        System.out.println("4 ===> Delete Purchase Requisition");
                         System.out.println("\n");
                         System.out.println("Please enter your choice:");
                         choice = scan.nextInt();
@@ -259,12 +268,21 @@ public class Start {
                                 pr.editPRequisition();
                                 break;
                             case 3:
+                                pr.viewPRequisition();
+                                break;
+                            case 4:
                                 pr.deletePRequisition();
                                 break;
                             default:
                                 break;
                         }
                         
+                        System.out.println("Do you wish to continue to Main Menu? (Y/N)");
+                        cont = scan.next();
+                    }
+                    else if(choice == 5)
+                    {
+                        po.viewPurchaseOrder();
                         System.out.println("Do you wish to continue to Main Menu? (Y/N)");
                         cont = scan.next();
                     }
@@ -275,14 +293,47 @@ public class Start {
                     System.out.println("1 ===> List Of Items");
                     System.out.println("2 ===> List Of Suppliers");
                     System.out.println("3 ===> Purchase Requisition");
-                    System.out.println("4 ===> Generate Purchase Orders");
-                    System.out.println("5 ===> List Of Purchase Orders");
+                    System.out.println("4 ===> Purchase Orders");
                     System.out.print("\n");
                     System.out.println("Please enter your choice:");
+                    choice = scan.nextInt();
                     
-                    
-                    System.out.println("Do you wish to continue to Main Menu? (Y/N)");
-                    cont = scan.next();                    
+                    if(choice == 1)
+                    {
+                        
+                    }
+                    else if(choice == 4)
+                    {
+                        System.out.println("Purchase Order\n");
+                        System.out.println("1 ===> Create New Purchase Order");
+                        System.out.println("2 ===> Modify Existing Purchase Order");
+                        System.out.println("3 ===> View Purchase Order");
+                        System.out.println("4 ===> Delete Purchase Order");
+                        System.out.println("\n");
+                        System.out.println("Please enter your choice:");
+                        choice = scan.nextInt();
+                        
+                        switch (choice)
+                        {
+                            case 1:
+                                po.addPurchaseOrder();
+                                break;
+                            case 2:
+                                po.editPurchaseOrder();
+                                break;
+                            case 3:
+                                po.viewPurchaseOrder();
+                                break;
+                            case 4:
+                                po.deletePurchaseOrder();
+                                break;
+                            default:
+                                break;
+                        }
+                        
+                        System.out.println("Do you wish to continue to Main Menu? (Y/N)");
+                        cont = scan.next();
+                    }                                      
                     break;
                     
                 default:

@@ -109,7 +109,7 @@ public class DailyItemSales implements DailyItemSalesRecord {
                 String itemPrice = details[2];
                 String itemQty = details[3];
                 String supplierID = details[4];
-                
+
                 totalQty = oriQty - salesQty;
                 String newQty = Integer.toString(totalQty);
                 if(ID.equals(code))
@@ -198,7 +198,6 @@ public class DailyItemSales implements DailyItemSalesRecord {
                 {
                     bw.write(dailysales + "\n");
                     bw.flush();
-                    found = false;
                 }
             }
             if(!found)

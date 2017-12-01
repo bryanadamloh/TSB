@@ -7,6 +7,7 @@ package tsb;
 
 import java.io.*;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 public class Item implements ItemRecord{
     
     @Override
@@ -19,20 +20,19 @@ public class Item implements ItemRecord{
             
             Scanner scan = new Scanner(System.in);
 
-            String code, name, supplier, qty, supp;
-            double price;
+            String code, name, supplier, qty, price, supp;
             boolean found = false;
             
             System.out.println("Enter Item Code: ");
-            code = scan.next();
+            code = scan.nextLine();
             System.out.println("Enter Item Name: ");
-            name = scan.next();
+            name = scan.nextLine();
             System.out.println("Enter Item Price: ");
-            price = scan.nextDouble();
+            price = scan.nextLine();
             System.out.println("Enter Item Quantity: ");
-            qty = scan.next();
+            qty = scan.nextLine();
             System.out.println("Enter Supplier ID: ");
-            supplier = scan.next();
+            supplier = scan.nextLine();
             
             while((supp = br2.readLine()) != null)
             {
@@ -110,11 +110,11 @@ public class Item implements ItemRecord{
                     System.out.println("Enter New Item Name: ");
                     name = scan.nextLine();
                     System.out.println("Enter New Item Price: ");
-                    price = scan.next();
+                    price = scan.nextLine();
                     System.out.println("Enter New Item Qty: ");
-                    qty = scan.next();
+                    qty = scan.nextLine();
                     System.out.println("Enter New Supplier ID: ");
-                    supplier = scan.next();
+                    supplier = scan.nextLine();
                     
                     item = item.replace(itemName, name);
                     item = item.replace(itemPrice, price);
@@ -147,7 +147,28 @@ public class Item implements ItemRecord{
     @Override
     public void viewItem() throws IOException
     {
-        
+        try
+        {
+            BufferedReader br = new BufferedReader(new FileReader("item.txt"));
+            
+            String item;
+            
+            System.out.println("Item Code   Name        Item Price     Quantity     Supplier ID");
+            System.out.println("---------------------------------------------------------------");
+            
+            while((item = br.readLine()) != null)
+            {
+                StringTokenizer st = new StringTokenizer(item, ":");
+                System.out.println("  " + st.nextToken() + "	    " + st.nextToken() + "	" + "RM" + st.nextToken() + "	  	" + st.nextToken() + "           " + st.nextToken());
+            }
+            
+            System.out.println("---------------------------------------------------------------");
+            br.close();
+        }
+        catch(IOException i)
+        {
+            i.printStackTrace();
+        }
     }
     
     @Override
