@@ -153,6 +153,7 @@ public class Item implements ItemRecord{
             
             String item;
             
+            System.out.println("---------------------------------------------------------------");
             System.out.println("Item Code   Name        Item Price     Quantity     Supplier ID");
             System.out.println("---------------------------------------------------------------");
             

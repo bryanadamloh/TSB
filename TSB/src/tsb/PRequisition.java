@@ -8,6 +8,7 @@ package tsb;
 import java.io.*;
 import java.util.Scanner;
 import java.util.Random;
+import java.util.StringTokenizer;
 public class PRequisition implements PRequisitionRecord {
     
     @Override
@@ -158,7 +159,29 @@ public class PRequisition implements PRequisitionRecord {
     @Override
     public void viewPRequisition() throws IOException
     {
-        
+        try
+        {
+            BufferedReader br = new BufferedReader(new FileReader("PR.txt"));
+            
+            String PR;
+            
+            System.out.println("------------------------------------------------------------------------------------");
+            System.out.println("Requisition ID    Item Code         Item Name     Quantity     Date      Supplier ID");
+            System.out.println("------------------------------------------------------------------------------------");
+            
+            while((PR = br.readLine()) != null)
+            {
+                StringTokenizer st = new StringTokenizer(PR, ":");
+                System.out.println("  " + st.nextToken() + "	    " + st.nextToken() + "	    " + st.nextToken() + "	    " + st.nextToken() + "	    " + st.nextToken() + "	    " + st.nextToken());
+            }
+            
+            System.out.println("------------------------------------------------------------------------------------");
+            br.close();
+        }
+        catch(IOException i)
+        {
+            i.printStackTrace();
+        }
     }
     
     @Override

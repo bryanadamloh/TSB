@@ -5,7 +5,6 @@
  */
 package tsb;
 
-import java.text.*;
 public class Sales {
     
     private double price = 0.00;

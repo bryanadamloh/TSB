@@ -8,6 +8,7 @@ package tsb;
 import java.io.*;
 import java.util.Scanner;
 import java.util.Random;
+import java.util.StringTokenizer;
 public class PurchaseOrder implements PurchaseOrderRecord{
     
     @Override
@@ -37,7 +38,7 @@ public class PurchaseOrder implements PurchaseOrderRecord{
                     System.out.println("Do you want to approve this PR?(Either Accept/Reject)");
                     status = scan.next();
                     
-                    if(br.readLine() == null && status.equals("Accept"))
+                    if(br.readLine() == null)
                     {
                         PrintWriter pw = new PrintWriter("order.txt");
                         Random gen = new Random();
@@ -45,19 +46,17 @@ public class PurchaseOrder implements PurchaseOrderRecord{
                         pw.write(uID + ":" + prID + ":" + date + ":" + Start.username + ":" + status);
                         pw.println();
                         pw.close();
-                        System.out.println("Purchase Order ID " + uID + " has been approved!");
+                        if(status.equals("Accept"))
+                        {
+                            System.out.println("Purchase Order ID " + uID + " has been accepted!");
+                        }
+                        else
+                        {
+                            System.out.println("Purchase Order ID " + uID + " has been rejected!");
+                        }
+                        
                     }
-                    else if(br.readLine() == null && status.equals("Reject"))
-                    {
-                        PrintWriter pw = new PrintWriter("order.txt");
-                        Random gen = new Random();
-                        String uID = String.format("PO" + "%04d", gen.nextInt(9999));
-                        pw.write(uID + ":" + prID + ":" + date + ":" + Start.username + ":" + status);
-                        pw.println();
-                        pw.close();
-                        System.out.println("Purchase Order ID " + uID + " has been rejected!");
-                    }
-                    else if(br.readLine() != null && status.equals("Accept"))
+                    else
                     {
                         BufferedWriter bw = new BufferedWriter(new FileWriter("order.txt", true));
                         Random gen = new Random();
@@ -65,17 +64,14 @@ public class PurchaseOrder implements PurchaseOrderRecord{
                         bw.write(uID + ":" + prID + ":" + date + ":" + Start.username + ":" + status);
                         bw.newLine();
                         bw.close();
-                        System.out.println("Purchase Order ID " + uID + " has been approved!");
-                    }
-                    else if(br.readLine() != null && status.equals("Reject"))
-                    {
-                        BufferedWriter bw = new BufferedWriter(new FileWriter("order.txt", true));
-                        Random gen = new Random();
-                        String uID = String.format("PO" + "%04d", gen.nextInt(9999));
-                        bw.write(uID + ":" + prID + ":" + date + ":" + Start.username + ":" + status);
-                        bw.newLine();
-                        bw.close();
-                        System.out.println("Purchase Order ID " + uID + " has been approved!");
+                        if(status.equals("Accept"))
+                        {
+                            System.out.println("Purchase Order ID " + uID + " has been accepted!");
+                        }
+                        else
+                        {
+                            System.out.println("Purchase Order ID " + uID + " has been rejected!");
+                        }
                     }
                     
                     br.close();
@@ -171,7 +167,29 @@ public class PurchaseOrder implements PurchaseOrderRecord{
     @Override
     public void viewPurchaseOrder() throws IOException
     {
-        
+        try
+        {
+            BufferedReader br = new BufferedReader(new FileReader("order.txt"));
+            
+            String PO;
+            
+            System.out.println("-----------------------------------------------------------------");
+            System.out.println("Order ID   Requisition ID   Date         Updated By        Status");
+            System.out.println("-----------------------------------------------------------------");
+            
+            while((PO = br.readLine()) != null)
+            {
+                StringTokenizer st = new StringTokenizer(PO, ":");
+                System.out.println("  " + st.nextToken() + "	" + st.nextToken() + "	    " + st.nextToken() + "	    " + st.nextToken() + "		" + st.nextToken());                
+            }
+            
+            System.out.println("-----------------------------------------------------------------");
+            br.close();
+        }
+        catch(IOException i)
+        {
+            
+        }
     }
     
     @Override

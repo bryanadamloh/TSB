@@ -7,6 +7,7 @@ package tsb;
 
 import java.io.*;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 public class Supplier implements SupplierRecord{
     
     @Override
@@ -125,14 +126,29 @@ public class Supplier implements SupplierRecord{
     @Override
     public void viewSupplier() throws IOException
     {
-//        try
-//        {
-//            
-//        }
-//        catch(IOException i)
-//        {
-//            i.printStackTrace();
-//        }
+        try
+        {
+            BufferedReader br = new BufferedReader(new FileReader("supplier.txt"));
+            
+            String supplier;
+            
+            System.out.println("---------------------------------------------------------");
+            System.out.println("Supplier ID   Name        Company          Contact Number");
+            System.out.println("---------------------------------------------------------");
+            
+            while((supplier = br.readLine()) != null)
+            {
+                StringTokenizer st = new StringTokenizer(supplier, ":");
+                System.out.println("  " + st.nextToken() + "	    " + st.nextToken() + "	" + st.nextToken() + "	    " + st.nextToken());     
+            }
+            
+            System.out.println("---------------------------------------------------------");
+            br.close();
+        }
+        catch(IOException i)
+        {
+            i.printStackTrace();
+        }
     }
     
     @Override
