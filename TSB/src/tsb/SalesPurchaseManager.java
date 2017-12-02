@@ -487,14 +487,16 @@ public class SalesPurchaseManager {
                     if(br.readLine() == null)
                     {
                         PrintWriter pw = new PrintWriter("dailysales.txt");
-                        pw.write(date + ":" + itemID + ":" + name + ":" + price + ":" + qty + ":" + s.calculateTotal());
+                        pw.write(1 + ":" + date + ":" + itemID + ":" + name + ":" + price + ":" + qty + ":" + s.calculateTotal());
                         pw.println();
                         pw.close();
                     }
                     else
                     {
+                        int count;
+                        count = readCounter();
                         BufferedWriter bw = new BufferedWriter(new FileWriter("dailysales.txt", true));
-                        bw.append(date + ":" + itemID + ":" + name + ":" + price + ":" + qty + ":" + s.calculateTotal());
+                        bw.append(count+1 + ":" + date + ":" + itemID + ":" + name + ":" + price + ":" + qty + ":" + s.calculateTotal());
                         bw.newLine();
                         bw.close();
                     }
@@ -521,6 +523,43 @@ public class SalesPurchaseManager {
         {
             i.printStackTrace();
         }
+    }
+    
+    /*
+        Return the counter of the text file
+    */
+    public int readCounter() throws IOException
+    {
+        try
+        {
+            BufferedReader br = new BufferedReader(new FileReader("dailysales.txt"));
+            int counter = 1;
+            String ds;
+            
+            while((ds = br.readLine()) != null)
+            {
+                String[] details = ds.split(":");
+                String ID = details[0];
+                
+                if(counter == 1)
+                {
+                    counter = Integer.parseInt(ID);
+                }
+                else if(Integer.parseInt(ID) > counter)
+                {
+                    counter = Integer.parseInt(ID);
+                }
+            }
+            
+            br.close();
+            return(counter);
+        }
+        catch(IOException i)
+        {
+            i.printStackTrace();
+        }
+
+        return -1;
     }
     
     public void DeductItemQty(String code, int oriQty, int salesQty) throws IOException
@@ -586,26 +625,27 @@ public class SalesPurchaseManager {
             BufferedWriter bw = new BufferedWriter(new FileWriter(tempDB));
             Scanner scan = new Scanner(System.in);
             
-            String itemID, newQty, dailysales;
+            String dID, newQty, dailysales;
             double total;
             boolean found = false;
             
-            System.out.println("Enter Item Code to modify: ");
-            itemID = scan.nextLine();
+            System.out.println("Enter Daily Sales ID to modify: ");
+            dID = scan.nextLine();
             
             while((dailysales = br.readLine()) != null)
             {
                 String[] details = dailysales.split(":");
-                String date = details[0];
-                String code = details[1];
-                String name = details[2];
-                String itemPrice = details[3];
-                String salesQty = details[4];
-                String totalsales = details[5];
+                String ID = details[0];
+                String date = details[1];
+                String code = details[2];
+                String name = details[3];
+                String itemPrice = details[4];
+                String salesQty = details[5];
+                String totalsales = details[6];
                 
-                if(itemID.equals(code))
+                if(dID.equals(ID))
                 {
-                    System.out.println("Item ID exists!\n");
+                    System.out.println("Daily Sales ID exists!\n");
                     System.out.println("Enter New Quantity Sold: ");
                     newQty = scan.nextLine();
                     
@@ -631,12 +671,11 @@ public class SalesPurchaseManager {
                 {
                     bw.write(dailysales + "\n");
                     bw.flush();
-                    found = false;
                 }
             }
             if(!found)
             {
-                System.out.println("Invalid Item ID. Please Try Again!");
+                System.out.println("Invalid Daily Sales ID. Please Try Again!");
             }
             
             br.close();
@@ -646,7 +685,7 @@ public class SalesPurchaseManager {
             
             if(found)
             {
-                System.out.println("Daily Sales for Item Code " + itemID + " has been succesfully modified!");
+                System.out.println("Daily Sales ID " + dID + " has been succesfully modified!");
             }
             
         }
@@ -724,26 +763,26 @@ public class SalesPurchaseManager {
             BufferedWriter bw = new BufferedWriter(new FileWriter(tempDB));
             Scanner scan = new Scanner(System.in);
             
-            String itemID, dailysales;
+            String dID, dailysales;
             boolean found = false;
             
             System.out.println("Enter Item Code to delete");
-            itemID = scan.nextLine();
+            dID = scan.nextLine();
             
             while((dailysales = br.readLine()) != null)
             {
                 String[] details = dailysales.split(":");
-                String code = details[1];
+                String code = details[0];
                 String qty = details[4];
                 int oldQty = Integer.parseInt(qty);
                 
-                if(!itemID.equals(code))
+                if(!dID.equals(code))
                 {
                     bw.write(dailysales + "\n");
                     bw.flush();
                     found = true;
                 }
-                else if(itemID.equals(code))
+                else if(dID.equals(code))
                 {
                     ModifyItemQty(oldQty, code);
                     found = true;
@@ -755,7 +794,7 @@ public class SalesPurchaseManager {
             }
             if(!found)
             {
-                System.out.println("Invalid Item ID. Please Try Again!");
+                System.out.println("Invalid Daily Sales ID. Please Try Again!");
             }
             
             br.close();
@@ -764,7 +803,7 @@ public class SalesPurchaseManager {
             tempDB.renameTo(dsFile);
             
             if(found){
-                System.out.println("Daily Sales Item Code " + itemID + " has been succesfully deleted!");
+                System.out.println("Daily Sales ID " + dID + " has been succesfully deleted!");
             }
         }
         catch (IOException i)
