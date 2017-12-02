@@ -110,6 +110,9 @@ public class Start {
                                 case 2:
                                     a.modifySupplier();
                                     break;
+                                case 3:
+                                    a.viewSupplier();
+                                    break;
                                 case 4:
                                     a.deleteSupplier();
                                     break;
@@ -162,16 +165,16 @@ public class Start {
                             switch (choice) 
                             {
                                 case 1:
-                                    pr.addPRequisition();
+                                    a.addPRequisition();
                                     break;
                                 case 2:
-                                    pr.editPRequisition();
+                                    a.editPRequisition();
                                     break;
                                 case 3:
-                                    pr.viewPRequisition();
+                                    a.viewPRequisition();
                                     break;
                                 case 4:
-                                    pr.deletePRequisition();
+                                    a.deletePRequisition();
                                     break;
                                 default:
                                     break;
@@ -194,16 +197,16 @@ public class Start {
                             switch (choice)
                             {
                                 case 1:
-                                    po.addPurchaseOrder();
+                                    a.addPurchaseOrder();
                                     break;
                                 case 2:
-                                    po.editPurchaseOrder();
+                                    a.editPurchaseOrder();
                                     break;
                                 case 3:
-                                    po.viewPurchaseOrder();
+                                    a.viewPurchaseOrder();
                                     break;
                                 case 4:
-                                    po.deletePurchaseOrder();
+                                    a.deletePurchaseOrder();
                                     break;
                                 default:
                                     break;

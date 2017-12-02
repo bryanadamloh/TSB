@@ -188,7 +188,7 @@ public class PurchaseOrder implements PurchaseOrderRecord{
         }
         catch(IOException i)
         {
-            
+            i.printStackTrace();
         }
     }
     
