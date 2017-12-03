@@ -8,6 +8,7 @@ package tsb;
 import java.io.*;
 import java.util.Scanner;
 import java.util.Random;
+import java.util.StringTokenizer;
 public class Admin extends SalesPurchaseManager{
     
     public void AddUser() throws IOException
@@ -66,5 +67,68 @@ public class Admin extends SalesPurchaseManager{
         bw.close();
     }
     
+    public int getUser(String username, String pass)
+    {
+        try
+        {
+            BufferedReader br = new BufferedReader(new FileReader("user.txt"));
+            String user;
+            while((user = br.readLine()) != null)
+            {
+                String[] details = user.split(":");
+                String name = details[1];
+                String password = details[2];
+                String role = details[3];
+                
+                if(name.equals(username) && password.equals(pass) && role.equals("Admin"))
+                {
+                    return 0;
+                }
+                else if(name.equals(username) && password.equals(pass) && role.equals("Sales Manager"))
+                {
+                    return 1;
+                }
+                else if(name.equals(username) && password.equals(pass) && role.equals("Purchase Manager"))
+                {
+                    return 2;
+                }
+            }
+            
+            br.close();
+        }
+        catch (IOException i)
+        {
+            i.printStackTrace();
+        }
+        
+        return -1;
+    }
+    
+    public void ViewUser() throws IOException
+    {
+        try
+        {
+            BufferedReader br = new BufferedReader(new FileReader("user.txt"));
+            
+            String user;
+            
+            System.out.println("--------------------------------------------------------");
+            System.out.println("User ID       User Name    Password      Role");
+            System.out.println("--------------------------------------------------------");
+            
+            while((user = br.readLine()) != null)
+            {
+                StringTokenizer st = new StringTokenizer(user, ":");
+                System.out.println("  " + st.nextToken() + "	" + st.nextToken() + "	    " + st.nextToken() + "	 " + st.nextToken());
+            }
+            
+            System.out.println("--------------------------------------------------------");
+            br.close();
+        }
+        catch(IOException i)
+        {
+            i.printStackTrace();
+        }
+    }
 }
 

@@ -36,7 +36,7 @@ public class Start {
         System.out.println("Password:");
         password = scan.next();
         
-        access = new Start().getUser(username, password);
+        access = a.getUser(username, password);
         
         if(access == 0 || access == 1 || access == 2)
         {
@@ -45,11 +45,12 @@ public class Start {
                     case 0:
                         System.out.println("Welcome to Admin Main Menu\n\n");
                         System.out.println("1 ===> Add New User");
-                        System.out.println("2 ===> Item Entry");
-                        System.out.println("3 ===> Supplier Entry");
-                        System.out.println("4 ===> Daily Item-Wise Sales Entry");
-                        System.out.println("5 ===> Purchase Requisition");
-                        System.out.println("6 ===> Purchase Order");
+                        System.out.println("2 ===> View User");
+                        System.out.println("3 ===> Item Entry");
+                        System.out.println("4 ===> Supplier Entry");
+                        System.out.println("5 ===> Daily Item-Wise Sales Entry");
+                        System.out.println("6 ===> Purchase Requisition");
+                        System.out.println("7 ===> Purchase Order");
                         System.out.println("0 ===> Log Out");
                         System.out.print("\n");
                         System.out.println("Please enter your choice:");
@@ -58,8 +59,16 @@ public class Start {
                         if(choice == 1)
                         {
                             a.AddUser();
+                            System.out.println("Do you wish to continue to Main Menu? (Y/N)");
+                            cont = scan.next();
                         }
                         else if(choice == 2)
+                        {
+                            a.ViewUser();
+                            System.out.println("Do you wish to continue to Main Menu? (Y/N)");
+                            cont = scan.next();
+                        }
+                        else if(choice == 3)
                         {
                             System.out.println("Item Entry Menu\n");
                             System.out.println("1 ===> Add New Item");
@@ -91,7 +100,7 @@ public class Start {
                             System.out.println("Do you wish to continue to Main Menu? (Y/N)");
                             cont = scan.next();
                         }
-                        else if(choice == 3)
+                        else if(choice == 4)
                         {
                             System.out.println("Supplier Entry Menu\n");
                             System.out.println("1 ===> Add New Supplier");
@@ -123,7 +132,7 @@ public class Start {
                             System.out.println("Do you wish to continue to Main Menu? (Y/N)");
                             cont = scan.next();
                         }
-                        else if(choice == 4)
+                        else if(choice == 5)
                         {
                             System.out.println("Daily Item-Wise Sales Entry\n");
                             System.out.println("1 ===> Add New Daily Item Sales");
@@ -151,7 +160,7 @@ public class Start {
                             System.out.println("Do you wish to continue to Main Menu? (Y/N)");
                             cont = scan.next();
                         }
-                        else if(choice == 5)
+                        else if(choice == 6)
                         {
                             System.out.println("Purchase Requisition\n");
                             System.out.println("1 ===> Create New Purchase Requisition");
@@ -183,7 +192,7 @@ public class Start {
                             System.out.println("Do you wish to continue to Main Menu? (Y/N)");
                             cont = scan.next();
                         }
-                        else if(choice == 6)
+                        else if(choice == 7)
                         {
                             System.out.println("Purchase Order\n");
                             System.out.println("1 ===> Create New Purchase Order");
@@ -447,43 +456,5 @@ public class Start {
             Start.main(args);
         }
     }   
-    
-    
-    public int getUser(String username, String pass)
-    {
-        try
-        {
-            BufferedReader br = new BufferedReader(new FileReader("user.txt"));
-            String user;
-            while((user = br.readLine()) != null)
-            {
-                String[] details = user.split(":");
-                String name = details[1];
-                String password = details[2];
-                String role = details[3];
-                
-                if(name.equals(username) && password.equals(pass) && role.equals("Admin"))
-                {
-                    return 0;
-                }
-                else if(name.equals(username) && password.equals(pass) && role.equals("Sales Manager"))
-                {
-                    return 1;
-                }
-                else if(name.equals(username) && password.equals(pass) && role.equals("Purchase Manager"))
-                {
-                    return 2;
-                }
-            }
-            
-            br.close();
-        }
-        catch (IOException i)
-        {
-            i.printStackTrace();
-        }
-        
-        return -1;
-    }
 
 }

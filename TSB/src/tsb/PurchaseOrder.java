@@ -218,11 +218,11 @@ public class PurchaseOrder implements PurchaseOrderRecord{
                 {
                     bw.write(PO + "\n");
                     bw.flush();
-                    found = true;
-                }
-                else
-                {
                     found = false;
+                }
+                else if(poID.equals(ID))
+                {
+                    found = true;
                 }
             }
             

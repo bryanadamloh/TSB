@@ -210,11 +210,11 @@ public class PRequisition implements PRequisitionRecord {
                 {
                     bw.write(PR + "\n");
                     bw.flush();
-                    found = true;
-                }
-                else
-                {
                     found = false;
+                }
+                else if(prID.equals(ID))
+                {
+                    found = true;
                 }
             }
             

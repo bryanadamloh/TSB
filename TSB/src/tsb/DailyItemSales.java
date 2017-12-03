@@ -332,25 +332,26 @@ public class DailyItemSales implements DailyItemSalesRecord {
             String dID, dailysales;
             boolean found = false;
             
-            System.out.println("Enter Item Code to delete");
+            System.out.println("Enter Daily Item Sales ID to delete");
             dID = scan.nextLine();
             
             while((dailysales = br.readLine()) != null)
             {
                 String[] details = dailysales.split(":");
                 String code = details[0];
-                String qty = details[4];
+                String itemID = details[2];
+                String qty = details[5];
                 int oldQty = Integer.parseInt(qty);
                 
                 if(!dID.equals(code))
                 {
                     bw.write(dailysales + "\n");
                     bw.flush();
-                    found = true;
+                    found = false;
                 }
                 else if(dID.equals(code))
                 {
-                    ModifyItemQty(oldQty, code);
+                    ModifyItemQty(oldQty, itemID);
                     found = true;
                 }
                 else

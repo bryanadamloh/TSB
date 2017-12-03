@@ -33,12 +33,12 @@ public class Item implements ItemRecord{
             qty = scan.nextLine();
             System.out.println("Enter Supplier ID: ");
             supplier = scan.nextLine();
-            
+
             while((supp = br2.readLine()) != null)
             {
                 String[] details = supp.split(":");
                 String suppID = details[0];
-            
+
                 if(supplier.contains(suppID))
                 {
                     System.out.println("Supplier ID exists!");
