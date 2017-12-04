@@ -25,6 +25,11 @@ public class Item implements ItemRecord{
             
             System.out.println("Enter Item Code: ");
             code = scan.nextLine();
+            if(checkItemCode(code) == 0)
+            {
+                System.out.println("Item Code exists! Please enter a different Item Code!");
+                addItem();
+            }
             System.out.println("Enter Item Name: ");
             name = scan.nextLine();
             System.out.println("Enter Item Price: ");
@@ -80,6 +85,36 @@ public class Item implements ItemRecord{
         }
     }
    
+    public int checkItemCode(String code) throws IOException
+    {
+        try
+        {
+            BufferedReader br = new BufferedReader(new FileReader("item.txt"));
+            
+            String item;
+            
+            while((item = br.readLine()) != null)
+            {
+                String[] details = item.split(":");
+                String ID = details[0];
+                
+                if(code.equals(ID))
+                {
+                    br.close();
+                    return 0;
+                }
+            }
+            
+            br.close();
+        }
+        catch(IOException i)
+        {
+            i.printStackTrace();
+        }
+        
+        return 1;
+    }
+    
     @Override
     public void modifyItem() throws IOException
     {
@@ -198,6 +233,10 @@ public class Item implements ItemRecord{
                 {
                     bw.write(item + "\n");
                     bw.flush();
+                    found = false;
+                }
+                else if(ID.equals(itemID))
+                {
                     found = true;
                 }
                 else

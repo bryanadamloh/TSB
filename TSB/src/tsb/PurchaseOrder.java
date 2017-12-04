@@ -224,6 +224,10 @@ public class PurchaseOrder implements PurchaseOrderRecord{
                 {
                     found = true;
                 }
+                else
+                {
+                    found = false;
+                }
             }
             
             if(!found)

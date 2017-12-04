@@ -216,6 +216,10 @@ public class PRequisition implements PRequisitionRecord {
                 {
                     found = true;
                 }
+                else
+                {
+                    found = false;
+                }
             }
             
             if(!found)

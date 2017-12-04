@@ -20,26 +20,30 @@ public class SalesPurchaseManager {
             
             Scanner scan = new Scanner(System.in);
 
-            String code, name, supplier, qty, supp;
-            double price;
+            String code, name, supplier, qty, price, supp;
             boolean found = false;
             
             System.out.println("Enter Item Code: ");
-            code = scan.next();
+            code = scan.nextLine();
+            if(checkItemCode(code) == 0)
+            {
+                System.out.println("Item Code exists! Please enter a different Item Code!");
+                addItem();
+            }
             System.out.println("Enter Item Name: ");
-            name = scan.next();
+            name = scan.nextLine();
             System.out.println("Enter Item Price: ");
-            price = scan.nextDouble();
+            price = scan.nextLine();
             System.out.println("Enter Item Quantity: ");
-            qty = scan.next();
+            qty = scan.nextLine();
             System.out.println("Enter Supplier ID: ");
-            supplier = scan.next();
-            
+            supplier = scan.nextLine();
+
             while((supp = br2.readLine()) != null)
             {
                 String[] details = supp.split(":");
                 String suppID = details[0];
-            
+
                 if(supplier.contains(suppID))
                 {
                     System.out.println("Supplier ID exists!");
@@ -81,6 +85,36 @@ public class SalesPurchaseManager {
         }
     }
    
+    public int checkItemCode(String code) throws IOException
+    {
+        try
+        {
+            BufferedReader br = new BufferedReader(new FileReader("item.txt"));
+            
+            String item;
+            
+            while((item = br.readLine()) != null)
+            {
+                String[] details = item.split(":");
+                String ID = details[0];
+                
+                if(code.equals(ID))
+                {
+                    br.close();
+                    return 0;
+                }
+            }
+            
+            br.close();
+        }
+        catch(IOException i)
+        {
+            i.printStackTrace();
+        }
+        
+        return 1;
+    }
+    
     public void modifyItem() throws IOException
     {
         try
@@ -110,11 +144,11 @@ public class SalesPurchaseManager {
                     System.out.println("Enter New Item Name: ");
                     name = scan.nextLine();
                     System.out.println("Enter New Item Price: ");
-                    price = scan.next();
+                    price = scan.nextLine();
                     System.out.println("Enter New Item Qty: ");
-                    qty = scan.next();
+                    qty = scan.nextLine();
                     System.out.println("Enter New Supplier ID: ");
-                    supplier = scan.next();
+                    supplier = scan.nextLine();
                     
                     item = item.replace(itemName, name);
                     item = item.replace(itemPrice, price);
@@ -196,6 +230,10 @@ public class SalesPurchaseManager {
                 {
                     bw.write(item + "\n");
                     bw.flush();
+                    found = false;
+                }
+                else if(ID.equals(itemID))
+                {
                     found = true;
                 }
                 else
@@ -337,36 +375,9 @@ public class SalesPurchaseManager {
         }
     }
     
-    public void viewPurchaseOrder() throws IOException
-    {
-        try
-        {
-            BufferedReader br = new BufferedReader(new FileReader("order.txt"));
-            
-            String PO;
-            
-            System.out.println("-----------------------------------------------------------------");
-            System.out.println("Order ID   Requisition ID   Date         Updated By        Status");
-            System.out.println("-----------------------------------------------------------------");
-            
-            while((PO = br.readLine()) != null)
-            {
-                StringTokenizer st = new StringTokenizer(PO, ":");
-                System.out.println("  " + st.nextToken() + "	" + st.nextToken() + "	    " + st.nextToken() + "	    " + st.nextToken() + "		" + st.nextToken());                
-            }
-            
-            System.out.println("-----------------------------------------------------------------");
-            br.close();
-        }
-        catch(IOException i)
-        {
-            i.printStackTrace();
-        }
-    }
-    
     public void viewSupplier() throws IOException
     {
-       try
+        try
         {
             BufferedReader br = new BufferedReader(new FileReader("supplier.txt"));
             
@@ -388,7 +399,7 @@ public class SalesPurchaseManager {
         catch(IOException i)
         {
             i.printStackTrace();
-        } 
+        }
     }
     
     public void deleteSupplier() throws IOException
@@ -416,6 +427,10 @@ public class SalesPurchaseManager {
                 {
                     bw.write(supplier + "\n");
                     bw.flush();
+                    found = false;
+                }
+                else if(ID.equals(suppID))
+                {
                     found = true;
                 }
                 else
@@ -582,7 +597,7 @@ public class SalesPurchaseManager {
                 String itemPrice = details[2];
                 String itemQty = details[3];
                 String supplierID = details[4];
-                
+
                 totalQty = oriQty - salesQty;
                 String newQty = Integer.toString(totalQty);
                 if(ID.equals(code))
@@ -766,25 +781,26 @@ public class SalesPurchaseManager {
             String dID, dailysales;
             boolean found = false;
             
-            System.out.println("Enter Item Code to delete");
+            System.out.println("Enter Daily Item Sales ID to delete");
             dID = scan.nextLine();
             
             while((dailysales = br.readLine()) != null)
             {
                 String[] details = dailysales.split(":");
                 String code = details[0];
-                String qty = details[4];
+                String itemID = details[2];
+                String qty = details[5];
                 int oldQty = Integer.parseInt(qty);
                 
                 if(!dID.equals(code))
                 {
                     bw.write(dailysales + "\n");
                     bw.flush();
-                    found = true;
+                    found = false;
                 }
                 else if(dID.equals(code))
                 {
-                    ModifyItemQty(oldQty, code);
+                    ModifyItemQty(oldQty, itemID);
                     found = true;
                 }
                 else
@@ -987,7 +1003,6 @@ public class SalesPurchaseManager {
                 {
                     bw.write(PR + "\n");
                     bw.flush();
-                    found = false;
                 }
             }
             
@@ -1003,7 +1018,7 @@ public class SalesPurchaseManager {
             
             if(found)
             {
-                System.out.println("Purchase Requisition ID " + uID + " has been successfully deleted!");
+                System.out.println("Purchase Requisition ID " + uID + " has been successfully modified!");
             }
         }
         catch (IOException i)
@@ -1014,7 +1029,7 @@ public class SalesPurchaseManager {
     
     public void viewPRequisition() throws IOException
     {
-       try
+        try
         {
             BufferedReader br = new BufferedReader(new FileReader("PR.txt"));
             
@@ -1036,7 +1051,7 @@ public class SalesPurchaseManager {
         catch(IOException i)
         {
             i.printStackTrace();
-        } 
+        }
     }
     
     public void deletePRequisition() throws IOException
@@ -1064,6 +1079,10 @@ public class SalesPurchaseManager {
                 {
                     bw.write(PR + "\n");
                     bw.flush();
+                    found = false;
+                }
+                else if(prID.equals(ID))
+                {
                     found = true;
                 }
                 else
@@ -1244,6 +1263,33 @@ public class SalesPurchaseManager {
         }
     }
     
+    public void viewPurchaseOrder() throws IOException
+    {
+        try
+        {
+            BufferedReader br = new BufferedReader(new FileReader("order.txt"));
+            
+            String PO;
+            
+            System.out.println("-----------------------------------------------------------------");
+            System.out.println("Order ID   Requisition ID   Date         Updated By        Status");
+            System.out.println("-----------------------------------------------------------------");
+            
+            while((PO = br.readLine()) != null)
+            {
+                StringTokenizer st = new StringTokenizer(PO, ":");
+                System.out.println("  " + st.nextToken() + "	" + st.nextToken() + "	    " + st.nextToken() + "	    " + st.nextToken() + "		" + st.nextToken());                
+            }
+            
+            System.out.println("-----------------------------------------------------------------");
+            br.close();
+        }
+        catch(IOException i)
+        {
+            i.printStackTrace();
+        }
+    }
+    
     public void deletePurchaseOrder() throws IOException
     {
         try
@@ -1269,6 +1315,10 @@ public class SalesPurchaseManager {
                 {
                     bw.write(PO + "\n");
                     bw.flush();
+                    found = false;
+                }
+                else if(poID.equals(ID))
+                {
                     found = true;
                 }
                 else

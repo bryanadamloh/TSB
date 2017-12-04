@@ -177,6 +177,10 @@ public class Supplier implements SupplierRecord{
                 {
                     bw.write(supplier + "\n");
                     bw.flush();
+                    found = false;
+                }
+                else if(ID.equals(suppID))
+                {
                     found = true;
                 }
                 else
