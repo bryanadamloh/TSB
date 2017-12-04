@@ -11,14 +11,13 @@ import java.util.Random;
 import java.util.StringTokenizer;
 public class Admin extends SalesPurchaseManager{
     
+    private String username, password, role;
     public void AddUser() throws IOException
     {
         try
         {
             BufferedReader br = new BufferedReader(new FileReader("user.txt"));
             Scanner scan = new Scanner(System.in);
-
-            String username, password, role;
 
             System.out.print("Enter your username: ");
             username = scan.next();
@@ -65,43 +64,6 @@ public class Admin extends SalesPurchaseManager{
         bw.newLine();
         bw.write(randomNum + ":" + username + ":" + password + ":" + role);
         bw.close();
-    }
-    
-    public int getUser(String username, String pass)
-    {
-        try
-        {
-            BufferedReader br = new BufferedReader(new FileReader("user.txt"));
-            String user;
-            while((user = br.readLine()) != null)
-            {
-                String[] details = user.split(":");
-                String name = details[1];
-                String password = details[2];
-                String role = details[3];
-                
-                if(name.equals(username) && password.equals(pass) && role.equals("Admin"))
-                {
-                    return 0;
-                }
-                else if(name.equals(username) && password.equals(pass) && role.equals("Sales Manager"))
-                {
-                    return 1;
-                }
-                else if(name.equals(username) && password.equals(pass) && role.equals("Purchase Manager"))
-                {
-                    return 2;
-                }
-            }
-            
-            br.close();
-        }
-        catch (IOException i)
-        {
-            i.printStackTrace();
-        }
-        
-        return -1;
     }
     
     public void ViewUser() throws IOException

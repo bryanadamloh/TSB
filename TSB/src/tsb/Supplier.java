@@ -10,6 +10,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 public class Supplier implements SupplierRecord{
     
+    public String code;
     @Override
     public void addSupplier() throws IOException
     {
@@ -18,7 +19,7 @@ public class Supplier implements SupplierRecord{
             BufferedReader br = new BufferedReader(new FileReader("supplier.txt"));
             Scanner scan = new Scanner(System.in);
             
-            String code, name, company, contact;
+            String name, company, contact;
             
             System.out.println("Enter Supplier ID: ");
             code = scan.nextLine();
@@ -64,11 +65,11 @@ public class Supplier implements SupplierRecord{
             BufferedWriter bw = new BufferedWriter(new FileWriter(tempDB));
             Scanner scan = new Scanner(System.in);
             
-            String ID, name, company, contact, supplier;
+            String name, company, contact, supplier;
             boolean found = false;
             
             System.out.println("Enter Supplier ID to modify: ");
-            ID = scan.nextLine();
+            code = scan.nextLine();
             
             while((supplier = br.readLine()) != null)
             {
@@ -78,7 +79,7 @@ public class Supplier implements SupplierRecord{
                 String suppCom = details[2];
                 String suppCont = details[3];
                 
-                if(suppID.equals(ID))
+                if(suppID.equals(code))
                 {
                     System.out.println("Enter New Supplier Name: ");
                     name = scan.nextLine();
@@ -114,7 +115,7 @@ public class Supplier implements SupplierRecord{
             
             if(found)
             {
-                System.out.println("Supplier ID " + ID + " has been modified successfully!");
+                System.out.println("Supplier ID " + code + " has been modified successfully!");
             }
         }
         catch (IOException i)

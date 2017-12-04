@@ -10,6 +10,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 public class Item implements ItemRecord{
     
+    public String code;
     @Override
     public void addItem() throws IOException
     {
@@ -20,7 +21,7 @@ public class Item implements ItemRecord{
             
             Scanner scan = new Scanner(System.in);
 
-            String code, name, supplier, qty, price, supp;
+            String name, supplier, qty, price, supp;
             boolean found = false;
             
             System.out.println("Enter Item Code: ");
@@ -126,7 +127,7 @@ public class Item implements ItemRecord{
             BufferedWriter bw = new BufferedWriter(new FileWriter(tempDB));
             Scanner scan = new Scanner(System.in);
             
-            String code, name, price, qty, supplier, item;
+            String name, price, qty, supplier, item;
             
             System.out.println("Enter Item Code to modify: ");
             code = scan.nextLine();
