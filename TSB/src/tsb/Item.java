@@ -31,54 +31,58 @@ public class Item implements ItemRecord{
                 System.out.println("Item Code exists! Please enter a different Item Code!");
                 addItem();
             }
-            System.out.println("Enter Item Name: ");
-            name = scan.nextLine();
-            System.out.println("Enter Item Price: ");
-            price = scan.nextLine();
-            System.out.println("Enter Item Quantity: ");
-            qty = scan.nextLine();
-            System.out.println("Enter Supplier ID: ");
-            supplier = scan.nextLine();
-
-            while((supp = br2.readLine()) != null)
+            else
             {
-                String[] details = supp.split(":");
-                String suppID = details[0];
+                System.out.println("Enter Item Name: ");
+                name = scan.nextLine();
+                System.out.println("Enter Item Price: ");
+                price = scan.nextLine();
+                System.out.println("Enter Item Quantity: ");
+                qty = scan.nextLine();
+                System.out.println("Enter Supplier ID: ");
+                supplier = scan.nextLine();
 
-                if(supplier.contains(suppID))
+                while((supp = br2.readLine()) != null)
                 {
-                    System.out.println("Supplier ID exists!");
-                    if(br.readLine() == null)
+                    String[] details = supp.split(":");
+                    String suppID = details[0];
+
+                    if(supplier.contains(suppID))
                     {
-                        PrintWriter pw = new PrintWriter("item.txt");
-                        pw.write(code + ":" + name + ":" + price + ":" + qty + ":" + supplier);
-                        pw.println();
-                        pw.close();
+                        System.out.println("Supplier ID exists!");
+                        if(br.readLine() == null)
+                        {
+                            PrintWriter pw = new PrintWriter("item.txt");
+                            pw.write(code + ":" + name + ":" + price + ":" + qty + ":" + supplier);
+                            pw.println();
+                            pw.close();
+                        }
+                        else
+                        {
+                            BufferedWriter bw = new BufferedWriter(new FileWriter("item.txt", true));
+                            bw.append(code + ":" + name + ":" + price + ":" + qty + ":" + supplier);
+                            bw.newLine();
+                            bw.close();
+                        }
+
+                        System.out.println("Item code " + code + " has been successfully added!");
+                        br.close();
+                        br2.close();
+                        found = true;
+                        break;
                     }
                     else
                     {
-                        BufferedWriter bw = new BufferedWriter(new FileWriter("item.txt", true));
-                        bw.append(code + ":" + name + ":" + price + ":" + qty + ":" + supplier);
-                        bw.newLine();
-                        bw.close();
+                        found = false;
                     }
-
-                    System.out.println("Item code " + code + " has been successfully added!");
-                    br.close();
-                    br2.close();
-                    found = true;
-                    break;
                 }
-                else
+
+                if(!found)
                 {
-                    found = false;
+                    System.out.println("Invalid Supplier ID. Please try again!");
                 }
             }
             
-            if(!found)
-            {
-                System.out.println("Invalid Supplier ID. Please try again!");
-            }
         }
         catch(IOException i)
         {

@@ -40,8 +40,8 @@ public class Supplier implements SupplierRecord{
             else
             {
                 BufferedWriter bw = new BufferedWriter(new FileWriter("supplier.txt", true));
-                bw.newLine();
                 bw.write(code + ":" + name + ":" + company + ":" + contact);
+                bw.newLine();
                 bw.close();
             }
             

@@ -30,54 +30,58 @@ public class SalesPurchaseManager {
                 System.out.println("Item Code exists! Please enter a different Item Code!");
                 addItem();
             }
-            System.out.println("Enter Item Name: ");
-            name = scan.nextLine();
-            System.out.println("Enter Item Price: ");
-            price = scan.nextLine();
-            System.out.println("Enter Item Quantity: ");
-            qty = scan.nextLine();
-            System.out.println("Enter Supplier ID: ");
-            supplier = scan.nextLine();
-
-            while((supp = br2.readLine()) != null)
+            else
             {
-                String[] details = supp.split(":");
-                String suppID = details[0];
+                System.out.println("Enter Item Name: ");
+                name = scan.nextLine();
+                System.out.println("Enter Item Price: ");
+                price = scan.nextLine();
+                System.out.println("Enter Item Quantity: ");
+                qty = scan.nextLine();
+                System.out.println("Enter Supplier ID: ");
+                supplier = scan.nextLine();
 
-                if(supplier.contains(suppID))
+                while((supp = br2.readLine()) != null)
                 {
-                    System.out.println("Supplier ID exists!");
-                    if(br.readLine() == null)
+                    String[] details = supp.split(":");
+                    String suppID = details[0];
+
+                    if(supplier.contains(suppID))
                     {
-                        PrintWriter pw = new PrintWriter("item.txt");
-                        pw.write(code + ":" + name + ":" + price + ":" + qty + ":" + supplier);
-                        pw.println();
-                        pw.close();
+                        System.out.println("Supplier ID exists!");
+                        if(br.readLine() == null)
+                        {
+                            PrintWriter pw = new PrintWriter("item.txt");
+                            pw.write(code + ":" + name + ":" + price + ":" + qty + ":" + supplier);
+                            pw.println();
+                            pw.close();
+                        }
+                        else
+                        {
+                            BufferedWriter bw = new BufferedWriter(new FileWriter("item.txt", true));
+                            bw.append(code + ":" + name + ":" + price + ":" + qty + ":" + supplier);
+                            bw.newLine();
+                            bw.close();
+                        }
+
+                        System.out.println("Item code " + code + " has been successfully added!");
+                        br.close();
+                        br2.close();
+                        found = true;
+                        break;
                     }
                     else
                     {
-                        BufferedWriter bw = new BufferedWriter(new FileWriter("item.txt", true));
-                        bw.append(code + ":" + name + ":" + price + ":" + qty + ":" + supplier);
-                        bw.newLine();
-                        bw.close();
+                        found = false;
                     }
-
-                    System.out.println("Item code " + code + " has been successfully added!");
-                    br.close();
-                    br2.close();
-                    found = true;
-                    break;
                 }
-                else
+
+                if(!found)
                 {
-                    found = false;
+                    System.out.println("Invalid Supplier ID. Please try again!");
                 }
             }
             
-            if(!found)
-            {
-                System.out.println("Invalid Supplier ID. Please try again!");
-            }
         }
         catch(IOException i)
         {
@@ -292,8 +296,8 @@ public class SalesPurchaseManager {
             else
             {
                 BufferedWriter bw = new BufferedWriter(new FileWriter("supplier.txt", true));
-                bw.newLine();
                 bw.write(code + ":" + name + ":" + company + ":" + contact);
+                bw.newLine();
                 bw.close();
             }
             
@@ -639,6 +643,7 @@ public class SalesPurchaseManager {
             BufferedReader br = new BufferedReader(new FileReader(dsFile));
             BufferedWriter bw = new BufferedWriter(new FileWriter(tempDB));
             Scanner scan = new Scanner(System.in);
+            Sales s = new Sales();
             
             String dID, newQty, dailysales;
             double total;
@@ -652,7 +657,7 @@ public class SalesPurchaseManager {
                 String[] details = dailysales.split(":");
                 String ID = details[0];
                 String date = details[1];
-                String code = details[2];
+                String itemCode = details[2];
                 String name = details[3];
                 String itemPrice = details[4];
                 String salesQty = details[5];
@@ -667,20 +672,24 @@ public class SalesPurchaseManager {
                     int newValue = Integer.parseInt(newQty);
                     double price = Double.parseDouble(itemPrice);
                     
-                    total = newValue * price;
-                    String sales = Double.toString(total);
+                    s.setPrice(price);
+                    s.setQuantity(newValue);
+                    total = s.calculateTotal();
+                    
+                    String newSales = Double.toString(total);
+                    String qty = Integer.toString(newValue);
                     
                     dailysales = dailysales.replace(date, date);
-                    dailysales = dailysales.replace(code, code);
+                    dailysales = dailysales.replace(itemCode, itemCode);
                     dailysales = dailysales.replace(name, name);
                     dailysales = dailysales.replace(itemPrice, itemPrice);
-                    dailysales = dailysales.replace(salesQty, newQty);
-                    dailysales = dailysales.replace(totalsales, sales);
+                    dailysales = dailysales.replace(salesQty, qty);
+                    dailysales = dailysales.replace(totalsales, newSales);
                     
                     bw.write(dailysales + "\n");
                     bw.flush();
                     found = true;
-                    changeItemQty(code, salesQty, newValue);
+                    changeItemQty(itemCode, salesQty, newValue);
                 }
                 else
                 {

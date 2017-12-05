@@ -189,6 +189,7 @@ public class DailyItemSales implements DailyItemSalesRecord {
             BufferedReader br = new BufferedReader(new FileReader(dsFile));
             BufferedWriter bw = new BufferedWriter(new FileWriter(tempDB));
             Scanner scan = new Scanner(System.in);
+            Sales s = new Sales();
             
             String dID, newQty, dailysales;
             double total;
@@ -217,7 +218,10 @@ public class DailyItemSales implements DailyItemSalesRecord {
                     int newValue = Integer.parseInt(newQty);
                     double price = Double.parseDouble(itemPrice);
                     
-                    total = newValue * price;
+                    s.setPrice(price);
+                    s.setQuantity(newValue);
+                    total = s.calculateTotal();
+                    
                     String sales = Double.toString(total);
                     
                     dailysales = dailysales.replace(date, date);
