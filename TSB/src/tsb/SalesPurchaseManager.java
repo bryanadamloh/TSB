@@ -276,38 +276,83 @@ public class SalesPurchaseManager {
             Scanner scan = new Scanner(System.in);
             
             String code, name, company, contact;
+            boolean found = false;
             
             System.out.println("Enter Supplier ID: ");
             code = scan.nextLine();
-            System.out.println("Enter Supplier Name: ");
-            name = scan.nextLine();
-            System.out.println("Enter Company Name: ");
-            company = scan.nextLine();
-            System.out.println("Enter Supplier Contact Number: ");
-            contact = scan.nextLine();
-            
-            if(br.readLine() == null)
+            if(checkSupplierCode(code) == 0)
             {
-                PrintWriter pw = new PrintWriter("supplier.txt");
-                pw.write(code + ":" + name + ":" + company + ":" + contact);
-                pw.println();
-                pw.close();
+                System.out.println("Supplier Code exists! Please try again!");
+                addSupplier();
             }
             else
             {
-                BufferedWriter bw = new BufferedWriter(new FileWriter("supplier.txt", true));
-                bw.write(code + ":" + name + ":" + company + ":" + contact);
-                bw.newLine();
-                bw.close();
+                System.out.println("Enter Supplier Name: ");
+                name = scan.nextLine();
+                System.out.println("Enter Company Name: ");
+                company = scan.nextLine();
+                System.out.println("Enter Supplier Contact Number: ");
+                contact = scan.nextLine();
+
+                if(br.readLine() == null)
+                {
+                    PrintWriter pw = new PrintWriter("supplier.txt");
+                    pw.write(code + ":" + name + ":" + company + ":" + contact);
+                    pw.println();
+                    pw.close();
+                }
+                else
+                {
+                    BufferedWriter bw = new BufferedWriter(new FileWriter("supplier.txt", true));
+                    bw.write(code + ":" + name + ":" + company + ":" + contact);
+                    bw.newLine();
+                    bw.close();
+                }
+
+                System.out.println("Supplier " + code + " has been successfully added!");
+                br.close();
+                found = true;       
             }
             
-            System.out.println("Supplier " + code + " has been successfully added!");
-            br.close(); 
+            if(!found)
+            {
+                System.out.println("Invalid Supplier ID. Please try again!");
+            }
         }
         catch (IOException i)
         {
             i.printStackTrace();
+        } 
+    }
+    
+    public int checkSupplierCode(String code) throws IOException
+    {
+        try
+        {
+            BufferedReader br = new BufferedReader(new FileReader("supplier.txt"));
+            
+            String item;
+            
+            while((item = br.readLine()) != null)
+            {
+                String[] details = item.split(":");
+                String ID = details[0];
+                
+                if(code.equals(ID))
+                {
+                    br.close();
+                    return 0;
+                }
+            }
+            
+            br.close();
         }
+        catch(IOException i)
+        {
+            i.printStackTrace();
+        }
+        
+        return 1;
     }
     
     public void modifySupplier() throws IOException

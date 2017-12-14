@@ -1,3 +1,3 @@
 S001:Ahmad:99 Speedmart:012-8734099
 S002:Chong:7-Eleven:019-2342966
-S003:Bangla:Family Mart:018-7764001
+S003:Abdul:Family Mart:018-7764001
